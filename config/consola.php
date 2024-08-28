@@ -13,6 +13,10 @@ $config = [
     '@bower' => '@vendor/bower-asset',
     '@npm'   => '@vendor/npm-asset',
     '@tests' => '@app/tests',
+    '@excel' => '@app/modulos/excel',
+    '@pdf' => '@app/modulos/pdf',
+    '@word' => '@app/modulos/word',
+    '@edesarrollos' => '@app/vendor/edesarrollos/yii2-ed/src',
   ],
   'components' => [
     'cache' => [

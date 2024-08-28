@@ -7,6 +7,6 @@ class Modulo extends \yii\base\Module {
   /**
    * {@inheritdoc}
    */
-  public $controllerNamespace = 'v1\controllers';
+  public $controllerNamespace = 'v1\controladores';
 
 }
