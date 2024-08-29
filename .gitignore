@@ -35,3 +35,4 @@ tests/_support/_generated
 /runtime
 
 composer.lock
+.vscode

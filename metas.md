@@ -1,0 +1,2 @@
+- Crear un gii para los modelos, agregar rules y las propiedades para el api
+- Revisar si se puede generar con información para ????? lo olvidé

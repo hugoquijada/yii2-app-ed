@@ -8,9 +8,16 @@
 
 Proyecto Base de eDesarrollos
 
-Instalación
+Instalación (Pendiente)
 ------------
 
 ```
-php composer.phar create-project --prefer-dist edesarrollos/yii2-app 
+php composer.phar create-project --prefer-dist edesarrollos/yii2-app-ed
+```
+
+Iniciar el servidor web
+------------
+
+```
+php index.php
 ```

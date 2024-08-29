@@ -11,9 +11,20 @@ $config = [
   'language' => 'es',
   'timezone' => 'America/Hermosillo',
   'defaultRoute' => 'v1/default',
+  'aliases' => [
+    '@excel' => '@app/modulos/excel',
+    '@pdf' => '@app/modulos/pdf',
+    '@word' => '@app/modulos/word',
+    '@edesarrollos' => '@app/vendor/edesarrollos/yii2-ed/src',
+  ],
   'components' => [
     'request' => [
       'cookieValidationKey' => 'a',
+      'parsers' => [
+        'application/json' => 'yii\web\JsonParser',
+      ],
+      'baseUrl' => '',
+      'scriptUrl' => '/index.php',
     ],
     'cache' => [
       'class' => 'yii\caching\FileCache',
@@ -34,12 +45,10 @@ $config = [
     ],
     'db' => $db,
     'urlManager' => [
-      'enablePrettyUrl' => true,
-      'showScriptName' => false,
-      'rules' => [],
+      'class' => 'eDesarrollos\rest\UrlManager'
     ],
   ],
-  
+
   'params' => $params,
   'modules' => [
     'v1' => ['class' => 'v1\Modulo'],
@@ -55,6 +64,8 @@ if (YII_ENV_DEV) {
 
   $config['bootstrap'][] = 'gii';
   $config['modules']['gii'] = ['class' => 'yii\gii\Module'];
+
+  $config['components']['urlManager']['baseUrl'] = '';
 }
 
 return $config;
