@@ -2,11 +2,11 @@
 
 namespace v1\controladores;
 
-use eDesarrollos\data\Respuesta;
-use app\rest\JsonController;
+use eDesarrollos\rest\JsonController;
 
 class DefaultController extends JsonController {
 
+  public $modelClass = '\app\modelos\Usuario';
 
   /*
   public function actionIndex() {
