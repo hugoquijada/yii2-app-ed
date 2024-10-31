@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "Media".
  *
  * @property string $id
- * @property string|null $idUsuario
+ * @property int|null $idUsuario
  * @property string $nombre
  * @property string|null $uuid
  * @property string|null $size
@@ -18,39 +18,42 @@ use Yii;
  * @property string|null $descripcion
  * @property string|null $creado
  * @property string|null $modificado
- * @property string|null $ubicacionFisica
  * @property string|null $eliminado
- * 
- * @property Usuario $usuario
  */
-class Media extends ModeloBase {
+class Media extends ModeloBase
+{
   /**
    * {@inheritdoc}
    */
-  public static function tableName() {
+
+  public static function tableName()
+  {
     return 'Media';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function rules() {
+  public function rules()
+  {
     return [
-      [['nombre'], 'required'],
+      [['id', 'nombre'], 'required'],
+      [['idUsuario'], 'default', 'value' => null],
+      [['idUsuario'], 'integer'],
       [['creado', 'modificado', 'eliminado'], 'safe'],
-      [['idUsuario'], 'string', 'max' => 50],
-      [['ubicacionFisica'], 'string', 'max' => 200],
+      [['id'], 'string', 'max' => 50],
+      [['nombre', 'uuid', 'size', 'mimetype'], 'string', 'max' => 100],
       [['extension'], 'string', 'max' => 5],
-      [['nombre', 'uuid', 'size', 'mimetype', 'ruta'], 'string', 'max' => 100],
-      [['descripcion'], 'string', 'max' => 500],
-      [['idUsuario'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::class, 'targetAttribute' => ['idUsuario' => 'id']],
+      [['ruta', 'descripcion'], 'string', 'max' => 500],
+      [['id'], 'unique'],
     ];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function attributeLabels() {
+  public function attributeLabels()
+  {
     return [
       'id' => 'ID',
       'idUsuario' => 'Id Usuario',
@@ -59,7 +62,6 @@ class Media extends ModeloBase {
       'size' => 'Size',
       'extension' => 'Extension',
       'mimetype' => 'Mimetype',
-      'ubicacionFisica' => 'Ubicación Fisica',
       'ruta' => 'Ruta',
       'descripcion' => 'Descripcion',
       'creado' => 'Creado',
@@ -68,13 +70,26 @@ class Media extends ModeloBase {
     ];
   }
 
-  /**
-   * Gets query for [[usuario]].
-   *
-   * @return \yii\db\ActiveQuery
-   */
-  public function getUsuario() {
-    return $this->hasOne(Usuario::class, ['id' => 'idUsuario']);
+  public function fields()
+  {
+    return [
+      'id',
+      'idUsuario',
+      'nombre',
+      'uuid',
+      'size',
+      'extension',
+      'mimetype',
+      'ruta',
+      'descripcion',
+      'creado',
+      'modificado',
+      'eliminado',
+    ];
   }
 
+  public function extraFields()
+  {
+    return [];
+  }
 }

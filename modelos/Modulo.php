@@ -15,18 +15,22 @@ use Yii;
  *
  * @property ModuloPermiso[] $permisos
  */
-class Modulo extends ModeloBase {
+class Modulo extends ModeloBase
+{
   /**
    * {@inheritdoc}
    */
-  public static function tableName() {
+
+  public static function tableName()
+  {
     return 'Modulo';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function rules() {
+  public function rules()
+  {
     return [
       [['id'], 'required'],
       [['creado', 'modificado', 'eliminado'], 'safe'],
@@ -39,7 +43,8 @@ class Modulo extends ModeloBase {
   /**
    * {@inheritdoc}
    */
-  public function attributeLabels() {
+  public function attributeLabels()
+  {
     return [
       'id' => 'ID',
       'nombre' => 'Nombre',
@@ -49,12 +54,32 @@ class Modulo extends ModeloBase {
     ];
   }
 
+  public function fields()
+  {
+    return [
+      'id',
+      'nombre',
+      'creado',
+      'modificado',
+      'eliminado',
+    ];
+  }
+
+  public function extraFields()
+  {
+    return [
+      'permisos',
+    ];
+  }
+
+
   /**
-   * Gets query for [[ermisos]].
+   * Gets query for [[ModuloPermisos]].
    *
    * @return \yii\db\ActiveQuery
    */
-  public function getPermisos() {
+  public function getPermisos()
+  {
     return $this->hasMany(ModuloPermiso::class, ['idModulo' => 'id']);
   }
 }

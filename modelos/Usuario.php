@@ -2,7 +2,9 @@
 
 namespace app\modelos;
 
+use Ramsey\Uuid\Uuid;
 use Yii;
+use yii\db\Expression;
 use yii\db\Query;
 
 /**
@@ -15,6 +17,7 @@ use yii\db\Query;
  * @property string $apellidos
  * @property int|null $estatus 0:inactivo, 1:activo
  * @property string $telefono
+ * @property string|null $alias
  * @property string|null $foto
  * @property string $rol
  * @property string|null $login
@@ -24,7 +27,7 @@ use yii\db\Query;
  *
  * @property Media[] $media
  */
-class Usuario extends ModeloBase {
+class Usuario extends \eDesarrollos\models\Usuario {
 
   public const ACTIVO = 1;
   public const INACTIVO = 0;
@@ -39,14 +42,16 @@ class Usuario extends ModeloBase {
   /**
    * {@inheritdoc}
    */
-  public function rules() {
+  public function rules()
+  {
     return [
-      [['id', 'correo', 'clave', 'nombre', 'telefono'], 'required'],
+      [['id', 'correo', 'clave', 'nombre', 'apellidos', 'rol'], 'required'],
       [['estatus'], 'default', 'value' => null],
-      [['estatus', 'pin'], 'integer'],
+      [['estatus'], 'integer'],
       [['creado', 'modificado', 'eliminado'], 'safe'],
-      [['id'], 'string', 'max' => 50],
-      [['correo', 'clave', 'nombre', 'apellidos', 'telefono', 'rol', 'login'], 'string', 'max' => 100],
+      [['id',], 'string', 'max' => 50],
+      [['correo'], 'string', 'max' => 128],
+      [['clave', 'nombre', 'apellidos', 'telefono', 'alias', 'rol', 'login'], 'string', 'max' => 100],
       [['foto'], 'string', 'max' => 300],
       [['id'], 'unique'],
     ];
@@ -61,8 +66,10 @@ class Usuario extends ModeloBase {
       'correo' => 'Correo',
       'clave' => 'Clave',
       'nombre' => 'Nombre',
+      'apellidos' => 'Apellidos',
       'estatus' => 'Estatus',
       'telefono' => 'Telefono',
+      'alias' => 'Alias',
       'foto' => 'Foto',
       'rol' => 'Rol',
       'login' => 'Login',
@@ -70,6 +77,100 @@ class Usuario extends ModeloBase {
       'modificado' => 'Modificado',
       'eliminado' => 'Eliminado',
     ];
+  }
+
+  public function fields()
+  {
+    return [
+      'id',
+      'correo',
+      'clave',
+      'nombre',
+      'apellidos',
+      'estatus',
+      'telefono',
+      'alias',
+      'foto',
+      'rol',
+      'login',
+      'creado',
+      'modificado',
+      'eliminado',
+    ];
+  }
+
+  public function extraFields()
+  {
+    return [
+      'permisos',
+    ];
+  }
+
+  public function addRefreshToken(){
+    $refreshToken = new RefreshTokenUsuario();
+    $refreshToken->idUsuario = $this->id;
+    $refreshToken->token = $this->uuid();
+    $refreshToken->expiracion = new Expression("NOW() + INTERVAL '30 DAYS'");
+    $refreshToken->creado = new Expression('NOW()');
+    if(!$refreshToken->save()){
+      throw new \Exception("Error al generar el refresh token");
+    }
+    $refreshToken->refresh();
+    return $refreshToken->token;
+  }
+
+  public function removeRefreshToken($token){
+    $refreshToken = RefreshTokenUsuario::find()
+      ->andWhere(["token" => $token])
+      ->andWhere(["idUsuario" => $this->id])
+      ->andWhere(["eliminado" => null])
+      ->one();
+    if($refreshToken !== null){
+      $refreshToken->eliminado = new Expression('NOW()');
+      if(!$refreshToken->save()){
+        throw new \Exception("Error al borrar el refresh token");
+      }
+    }
+  }
+
+  public function uuid()
+  {
+    $pk = static::primaryKey();
+    if (is_array($pk) && count($pk) > 1) {
+      return null;
+    }
+    $pk = $pk[0];
+    do {
+      $uuid = (Uuid::uuid4())
+        ->toString();
+
+      $modelo = static::find()
+        ->andWhere([$pk => $uuid]);
+    } while ($modelo->exists());
+    $this->{$pk} = $uuid;
+    return $uuid;
+  }
+
+  public function validarUnico($atributo, $parametros)
+  {
+    $query = static::find()
+      ->andWhere([$atributo => $this->{$atributo}]);
+
+    if ($this->hasProperty("eliminado")) {
+      $query->andWhere(["eliminado" => null]);
+    }
+
+    if (!$this->isNewRecord) {
+      $llaves = $this->primaryKey();
+      foreach ($llaves as $llave) {
+        $query->andWhere(["!=", $llave, $this->{$llave}]);
+      }
+    }
+
+    $existe = $query->exists();
+    if ($existe) {
+      $this->addError($atributo, "La {$atributo} ya ha sido utilizada.");
+    }
   }
 
   /**
@@ -81,17 +182,18 @@ class Usuario extends ModeloBase {
     return $this->hasMany(Media::class, ['idUsuario' => 'id']);
   }
 
+  public function getPermisos()
+  {
+    return $this->hasMany(ModuloPermiso::class, ['id' => 'idPermiso'])
+                ->viaTable('ModuloPermisoUsuario', ['idUsuario' => 'id']);
+  }
+  
   public function agregarClave($pwd) {
     $this->clave = Yii::$app->getSecurity()->generatePasswordHash($pwd);
   }
 
   public function validarClave($pwd) {
     return Yii::$app->getSecurity()->validatePassword($pwd, $this->clave);
-  }
-
-  public function getPermisos() {
-    return $this->hasMany(ModuloPermisoUsuario::class, ['idUsuario' => 'id'])
-      ->andWhere(['eliminado' => null]);
   }
 
 
