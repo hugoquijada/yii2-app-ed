@@ -2,9 +2,8 @@
 
 namespace v1\controladores;
 
-use app\modelos\ModuloPermisoUsuario;
+use app\modelos\MenuUsuario;
 use app\modelos\PermisoUsuario;
-use app\modelos\UsuarioPuerta;
 use eDesarrollos\data\Respuesta;
 use eDesarrollos\rest\JsonController;
 use Yii;
@@ -44,6 +43,7 @@ class UsuarioController extends JsonController {
     $modelo = null;
 
     $permisos = $this->req->getBodyParam("permisos", []);
+    $menus = $this->req->getBodyParam("menus", []);
 
     if ($id !== "") {
       $modelo = $this->modelClass::findOne($id);
@@ -81,6 +81,23 @@ class UsuarioController extends JsonController {
           return (new Respuesta($permisoData))
             ->esError()
             ->mensaje("Hubo un problema al guardar permisos");
+        }
+      }
+
+      MenuUsuario::deleteAll(["idUsuario" => $modelo->id]);
+      foreach ($menus as $menuData) {
+        $menuUsuario = new MenuUsuario();
+        $menuUsuario->id = $menuUsuario->uuid();
+        $menuUsuario->idMenu = $menuData["idMenu"];
+        $menuUsuario->idUsuario = $modelo->id;
+        $menuUsuario->asignado = new Expression('now()');
+        $menuUsuario->creado = $menuData["creado"];
+
+        if (!$menuUsuario->save()) {
+          $transaccion->rollBack();
+          return (new Respuesta($menuData))
+            ->esError()
+            ->mensaje("Hubo un problema al guardar menus");
         }
       }
 

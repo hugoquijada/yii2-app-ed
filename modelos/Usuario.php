@@ -26,6 +26,8 @@ use yii\db\Query;
  * @property int|null $pin
  *
  * @property Media[] $media
+ * @property Menu[] $menus
+ * @property Permiso[] $permisos
  */
 class Usuario extends \eDesarrollos\models\Usuario {
 
@@ -103,6 +105,8 @@ class Usuario extends \eDesarrollos\models\Usuario {
   {
     return [
       'permisos',
+      'menus',
+      'media',
     ];
   }
 
@@ -186,6 +190,10 @@ class Usuario extends \eDesarrollos\models\Usuario {
   {
     return $this->hasMany(ModuloPermiso::class, ['id' => 'idPermiso'])
                 ->viaTable('ModuloPermisoUsuario', ['idUsuario' => 'id']);
+  }
+
+  public function getMenus() {
+    return $this->hasMany(Menu::class, ['id' => 'idMenu'])->viaTable('MenuUsuario', ['idUsuario' => 'id']);
   }
   
   public function agregarClave($pwd) {
