@@ -16,10 +16,8 @@ class m241205_014846_agregando_catalogo_cruds extends Migration
         $this->createTable('Formulario', [
             "id" => $this->string(50)->notNull(),
             
-            "nombre" => $this->string(124)->notNull(),
-            "nombrePlural" => $this->string(127)->notNull(),
-
-            "esCrud" => $this->boolean()->notNull()->defaultValue(false),
+            "nombre" => $this->string(255)->notNull(),
+            "tabla" => $this->string(255)->notNull(),
 
             "creado" => $this->timestamp()->append("with time zone"),
             "modificado" => $this->timestamp()->append("with time zone"),
@@ -35,12 +33,7 @@ class m241205_014846_agregando_catalogo_cruds extends Migration
             "configuracion" => $this->json(),
 
             "requerido" => $this->boolean()->notNull()->defaultValue(false),
-
-            "mostrarFormulario" => $this->boolean()->notNull()->defaultValue(false),
-            "ordenFormulario" => $this->integer()->notNull()->defaultValue(0),
-
-            "mostrarListado" => $this->boolean()->notNull()->defaultValue(false),
-            "ordenListado" => $this->integer()->notNull()->defaultValue(0),
+            "mostrar" => $this->boolean()->notNull()->defaultValue(false),
 
             "creado" => $this->timestamp()->append("with time zone"),
             "modificado" => $this->timestamp()->append("with time zone"),

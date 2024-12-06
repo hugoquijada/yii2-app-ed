@@ -17,7 +17,7 @@ class m241205_033549_agregando_tabla_menus extends Migration
             'idPadre' => $this->string(50)->notNull(),
             
             'nombre' => $this->string(255)->notNull(),
-            'url' => $this->string(255)->notNull(),
+            'urlAbsoluta' => $this->string(255)->notNull(),
             'icono' => $this->string(255),
             'orden' => $this->integer()->notNull()->defaultValue(0),
 
