@@ -5,38 +5,39 @@ namespace app\modelos;
 use Yii;
 
 /**
- * This is the model class for table "Modulo".
+ * Clase modelo para la tabla "ResultadoFormulario".
  *
  * @property string $id
- * @property string|null $nombre
+ * @property string $idFormulario
  * @property string|null $creado
  * @property string|null $modificado
  * @property string|null $eliminado
  *
- * @property ModuloPermiso[] $permisos
+ * @property Formulario $formulario
+ * @property ResultadoFormularioValor[] $valores
  */
-class Modulo extends ModeloBase
+class ResultadoFormulario extends ModeloBase
 {
+
   /**
    * {@inheritdoc}
    */
-
   public static function tableName()
   {
-    return 'Modulo';
+    return 'ResultadoFormulario';
   }
-  
+
   /**
    * {@inheritdoc}
    */
   public function rules()
   {
     return [
-      [['id'], 'required'],
+      [['id', 'idFormulario'], 'required'],
       [['creado', 'modificado', 'eliminado'], 'safe'],
-      [['id'], 'string', 'max' => 50],
-      [['nombre'], 'string', 'max' => 200],
+      [['id', 'idFormulario'], 'string', 'max' => 50],
       [['id'], 'unique'],
+      [['idFormulario'], 'exist', 'skipOnError' => true, 'targetClass' => Formulario::class, 'targetAttribute' => ['idFormulario' => 'id']],
     ];
   }
 
@@ -47,7 +48,7 @@ class Modulo extends ModeloBase
   {
     return [
       'id' => 'ID',
-      'nombre' => 'Nombre',
+      'idFormulario' => 'Id Formulario',
       'creado' => 'Creado',
       'modificado' => 'Modificado',
       'eliminado' => 'Eliminado',
@@ -58,7 +59,7 @@ class Modulo extends ModeloBase
   {
     return [
       'id',
-      'nombre',
+      'idFormulario',
       'creado',
       'modificado',
       'eliminado',
@@ -68,18 +69,19 @@ class Modulo extends ModeloBase
   public function extraFields()
   {
     return [
-      'permisos',
+      'formulario',
+      'valores',
     ];
   }
 
 
-  /**
-   * Gets query for [[ModuloPermisos]].
-   *
-   * @return \yii\db\ActiveQuery
-   */
-  public function getPermisos()
+  public function getFormulario()
   {
-    return $this->hasMany(ModuloPermiso::class, ['idModulo' => 'id']);
+    return $this->hasOne(Formulario::class, ['id' => 'idFormulario']);
+  }
+
+  public function getValores()
+  {
+    return $this->hasMany(ResultadoFormularioValor::class, ['idResultadoFormulario' => 'id']);
   }
 }

@@ -16,20 +16,24 @@ use Yii;
  * @property string|null $eliminado
  *
  * @property Modulo $modulo
- * @property ModuloPermisoUsuario[] $permisos
+ * @property ModuloPermisoUsuario[] $moduloPermisoUsuarios
  */
-class ModuloPermiso extends ModeloBase {
+class ModuloPermiso extends ModeloBase
+{
   /**
    * {@inheritdoc}
    */
-  public static function tableName() {
+
+  public static function tableName()
+  {
     return 'ModuloPermiso';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function rules() {
+  public function rules()
+  {
     return [
       [['id'], 'required'],
       [['creado', 'modificado', 'eliminado'], 'safe'],
@@ -45,7 +49,8 @@ class ModuloPermiso extends ModeloBase {
   /**
    * {@inheritdoc}
    */
-  public function attributeLabels() {
+  public function attributeLabels()
+  {
     return [
       'id' => 'ID',
       'idModulo' => 'Id Modulo',
@@ -57,21 +62,35 @@ class ModuloPermiso extends ModeloBase {
     ];
   }
 
+  public function fields()
+  {
+    return [
+      'id',
+      'idModulo',
+      'nombre',
+      'descripcion',
+      'creado',
+      'modificado',
+      'eliminado',
+    ];
+  }
+
+  public function extraFields()
+  {
+    return [
+      'modulo',
+    ];
+  }
+
+
   /**
-   * Gets query for [[modulo]].
+   * Gets query for [[Modulo]].
    *
    * @return \yii\db\ActiveQuery
    */
-  public function getModulo() {
+  public function getModulo()
+  {
     return $this->hasOne(Modulo::class, ['id' => 'idModulo']);
   }
 
-  /**
-   * Gets query for [[permisos]].
-   *
-   * @return \yii\db\ActiveQuery
-   */
-  public function getPermiso() {
-    return $this->hasMany(ModuloPermisoUsuario::class, ['idPermiso' => 'id']);
-  }
 }

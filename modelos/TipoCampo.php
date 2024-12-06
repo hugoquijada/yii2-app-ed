@@ -5,37 +5,47 @@ namespace app\modelos;
 use Yii;
 
 /**
- * This is the model class for table "Modulo".
+ * Clase modelo para la tabla "TipoCampo".
  *
  * @property string $id
- * @property string|null $nombre
+ * @property string $clave
+ * @property string $nombre
  * @property string|null $creado
  * @property string|null $modificado
  * @property string|null $eliminado
  *
- * @property ModuloPermiso[] $permisos
+ * @property Propiedad[] $propiedades
  */
-class Modulo extends ModeloBase
+class TipoCampo extends ModeloBase
 {
+
   /**
    * {@inheritdoc}
    */
-
   public static function tableName()
   {
-    return 'Modulo';
+    return 'TipoCampo';
   }
-  
+
+  public static function nombreSingular(){
+    return 'Tipo de Campo';
+  }
+
+  public static function nombrePlural(){
+    return 'Tipos de Campos';
+  }
+
   /**
    * {@inheritdoc}
    */
   public function rules()
   {
     return [
-      [['id'], 'required'],
+      [['id', 'clave', 'nombre'], 'required'],
       [['creado', 'modificado', 'eliminado'], 'safe'],
       [['id'], 'string', 'max' => 50],
-      [['nombre'], 'string', 'max' => 200],
+      [['clave', 'nombre'], 'string', 'max' => 255],
+      [['clave'], 'unique'],
       [['id'], 'unique'],
     ];
   }
@@ -47,6 +57,7 @@ class Modulo extends ModeloBase
   {
     return [
       'id' => 'ID',
+      'clave' => 'Clave',
       'nombre' => 'Nombre',
       'creado' => 'Creado',
       'modificado' => 'Modificado',
@@ -58,6 +69,7 @@ class Modulo extends ModeloBase
   {
     return [
       'id',
+      'clave',
       'nombre',
       'creado',
       'modificado',
@@ -68,18 +80,13 @@ class Modulo extends ModeloBase
   public function extraFields()
   {
     return [
-      'permisos',
+      'propiedades',
     ];
   }
 
 
-  /**
-   * Gets query for [[ModuloPermisos]].
-   *
-   * @return \yii\db\ActiveQuery
-   */
-  public function getPermisos()
+  public function getPropiedades()
   {
-    return $this->hasMany(ModuloPermiso::class, ['idModulo' => 'id']);
+    return $this->hasMany(Propiedad::class, ['idTipoCampo' => 'id']);
   }
 }

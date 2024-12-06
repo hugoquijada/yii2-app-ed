@@ -8,10 +8,10 @@ use yii\console\ExitCode;
 class DbController extends Controller {
 
   public function actionInsertarUsuario() {
-    $usuario = new \app\models\Usuario();
+    $usuario = new \app\modelos\Usuario();
     $usuario->uuid();
-    $usuario->correo = "soporte@admin.com";
-    $usuario->agregarClave("Soporte@" . date("Y"));
+    $usuario->correo = "soporte@edesarrollos.info";
+    $usuario->agregarClave("Soporte@2024");
     $usuario->nombre = "Soporte";
     $usuario->apellidos = "Técnico";
     $usuario->rol = "admin";
