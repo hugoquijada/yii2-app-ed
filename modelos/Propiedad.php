@@ -5,53 +5,41 @@ namespace app\modelos;
 use Yii;
 
 /**
- * Clase modelo para la tabla "Propiedad".
- *
- * @property string $id
- * @property string $idFormulario
- * @property string $idTipoCampo
- * @property string $nombre
- * @property string|null $configuracion
- * @property bool $requerido
- * @property bool $mostrarFormulario
- * @property int $ordenFormulario
- * @property bool $mostrarListado
- * @property int $ordenListado
- * @property string|null $creado
- * @property string|null $modificado
- * @property string|null $eliminado
- *
- * @property Formulario $formulario
- * @property TipoCampo $tipoCampo
- * @property PropiedadOpcion[] $opciones
- * @property ResultadoFormularioValor[] $valores
- */
-class Propiedad extends ModeloBase
-{
+* Clase modelo para la tabla "Propiedad".
+*
+* @property string $id
+* @property string $idFormulario
+* @property string $idTipoCampo
+* @property string $nombre
+* @property string|null $configuracion
+* @property bool $requerido
+* @property bool $mostrar
+* @property string|null $creado
+* @property string|null $modificado
+* @property string|null $eliminado
+*
+* @property Formulario $formulario
+* @property TipoCampo $tipoCampo
+* @property PropiedadOpcion[] $opciones
+* @property ResultadoFormularioValor[] $valores
+*/
+class Propiedad extends ModeloBase {
 
   /**
-   * {@inheritdoc}
-   */
-  public static function tableName()
-  {
+  * {@inheritdoc}
+  */
+  public static function tableName() {
     return 'Propiedad';
   }
 
-  public static function nombrePlural(){
-    return "Propiedades";
-  }
-
   /**
-   * {@inheritdoc}
-   */
-  public function rules()
-  {
+  * {@inheritdoc}
+  */
+  public function rules() {
     return [
       [['id', 'idFormulario', 'idTipoCampo', 'nombre'], 'required'],
       [['configuracion', 'creado', 'modificado', 'eliminado'], 'safe'],
-      [['requerido', 'mostrarFormulario', 'mostrarListado'], 'boolean'],
-      [['ordenFormulario', 'ordenListado'], 'default', 'value' => null],
-      [['ordenFormulario', 'ordenListado'], 'integer'],
+      [['requerido', 'mostrar'], 'boolean'],
       [['id', 'idFormulario', 'idTipoCampo'], 'string', 'max' => 50],
       [['nombre'], 'string', 'max' => 255],
       [['id'], 'unique'],
@@ -61,10 +49,9 @@ class Propiedad extends ModeloBase
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function attributeLabels()
-  {
+  * {@inheritdoc}
+  */
+  public function attributeLabels() {
     return [
       'id' => 'ID',
       'idFormulario' => 'Id Formulario',
@@ -72,18 +59,14 @@ class Propiedad extends ModeloBase
       'nombre' => 'Nombre',
       'configuracion' => 'Configuracion',
       'requerido' => 'Requerido',
-      'mostrarFormulario' => 'Mostrar Formulario',
-      'ordenFormulario' => 'Orden Formulario',
-      'mostrarListado' => 'Mostrar Listado',
-      'ordenListado' => 'Orden Listado',
+      'mostrar' => 'Mostrar',
       'creado' => 'Creado',
       'modificado' => 'Modificado',
       'eliminado' => 'Eliminado',
     ];
   }
 
-  public function fields()
-  {
+  public function fields () {
     return [
       'id',
       'idFormulario',
@@ -91,18 +74,14 @@ class Propiedad extends ModeloBase
       'nombre',
       'configuracion',
       'requerido',
-      'mostrarFormulario',
-      'ordenFormulario',
-      'mostrarListado',
-      'ordenListado',
+      'mostrar',
       'creado',
       'modificado',
       'eliminado',
     ];
   }
 
-  public function extraFields()
-  {
+  public function extraFields() {
     return [
       'formulario',
       'tipoCampo',
@@ -112,23 +91,19 @@ class Propiedad extends ModeloBase
   }
 
 
-  public function getFormulario()
-  {
+  public function getFormulario() {
     return $this->hasOne(Formulario::class, ['id' => 'idFormulario']);
   }
 
-  public function getTipoCampo()
-  {
+  public function getTipoCampo() {
     return $this->hasOne(TipoCampo::class, ['id' => 'idTipoCampo']);
   }
 
-  public function getOpciones()
-  {
+  public function getOpciones() {
     return $this->hasMany(PropiedadOpcion::class, ['idPropiedad' => 'id']);
   }
 
-  public function getValores()
-  {
+  public function getValores() {
     return $this->hasMany(ResultadoFormularioValor::class, ['idPropiedad' => 'id']);
   }
 }

@@ -5,7 +5,7 @@ namespace app\modelos;
 use Yii;
 
 /**
- * This is the model class for table "Media".
+ * Clase modelo para la tabla "Media".
  *
  * @property string $id
  * @property int|null $idUsuario
@@ -22,10 +22,10 @@ use Yii;
  */
 class Media extends ModeloBase
 {
+
   /**
    * {@inheritdoc}
    */
-
   public static function tableName()
   {
     return 'Media';

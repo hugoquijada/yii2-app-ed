@@ -9,15 +9,14 @@ use Yii;
  *
  * @property string $id
  * @property string $nombre
- * @property string $nombrePlural
- * @property bool $esCrud
+ * @property string $tabla
  * @property string|null $creado
  * @property string|null $modificado
  * @property string|null $eliminado
  *
- * @property Menu[] $menus
+ * @property MenuFormulario[] $menuFormularios
  * @property Propiedad[] $propiedades
- * @property ResultadoFormulario[] $resultados
+ * @property ResultadoFormulario[] $resultadoFormularios
  */
 class Formulario extends ModeloBase
 {
@@ -36,12 +35,10 @@ class Formulario extends ModeloBase
   public function rules()
   {
     return [
-      [['id', 'nombre', 'nombrePlural'], 'required'],
-      [['esCrud'], 'boolean'],
+      [['id', 'nombre', 'tabla'], 'required'],
       [['creado', 'modificado', 'eliminado'], 'safe'],
       [['id'], 'string', 'max' => 50],
-      [['nombre'], 'string', 'max' => 124],
-      [['nombrePlural'], 'string', 'max' => 127],
+      [['nombre', 'tabla'], 'string', 'max' => 255],
       [['id'], 'unique'],
     ];
   }
@@ -54,8 +51,7 @@ class Formulario extends ModeloBase
     return [
       'id' => 'ID',
       'nombre' => 'Nombre',
-      'nombrePlural' => 'Nombre Plural',
-      'esCrud' => 'Es Crud',
+      'tabla' => 'Tabla',
       'creado' => 'Creado',
       'modificado' => 'Modificado',
       'eliminado' => 'Eliminado',
@@ -67,8 +63,7 @@ class Formulario extends ModeloBase
     return [
       'id',
       'nombre',
-      'nombrePlural',
-      'esCrud',
+      'tabla',
       'creado',
       'modificado',
       'eliminado',
@@ -78,24 +73,24 @@ class Formulario extends ModeloBase
   public function extraFields()
   {
     return [
-      'menus',
+      'menuFormularios',
       'propiedades',
-      'resultados',
+      'resultadoFormularios',
     ];
   }
 
 
-  public function getMenus()
+  public function getMenuFormularios()
   {
-    return $this->hasMany(Menu::class, ['idMenu' => 'id'])->viaTable('MenuFormulario', ['idFormulario' => 'id']);
+    return $this->hasMany(MenuFormulario::class, ['idFormulario' => 'id']);
   }
-
+    
   public function getPropiedades()
   {
     return $this->hasMany(Propiedad::class, ['idFormulario' => 'id']);
   }
 
-  public function getResultados()
+  public function getResultadoFormularios()
   {
     return $this->hasMany(ResultadoFormulario::class, ['idFormulario' => 'id']);
   }
