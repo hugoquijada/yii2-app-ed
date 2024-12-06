@@ -18,10 +18,10 @@ use Yii;
 * @property string|null $modificado
 * @property string|null $eliminado
 *
-* @property Formulario $formulario0
-* @property TipoCampo $tipoCampo0
-* @property PropiedadOpcion[] $propiedadOpcions
-* @property ResultadoFormularioValor[] $resultadoFormularioValors
+* @property Formulario $formulario
+* @property TipoCampo $tipoCampo
+* @property PropiedadOpcion[] $opciones
+* @property ResultadoFormularioValor[] $valores
 */
 class Propiedad extends ModeloBase {
 
@@ -83,27 +83,27 @@ class Propiedad extends ModeloBase {
 
   public function extraFields() {
     return [
-      'formulario0',
-      'tipoCampo0',
-      'propiedadOpcions',
-      'resultadoFormularioValors',
+      'formulario',
+      'tipoCampo',
+      'opciones',
+      'valores',
     ];
   }
 
 
-  public function getFormulario0() {
+  public function getFormulario() {
     return $this->hasOne(Formulario::class, ['id' => 'idFormulario']);
   }
 
-  public function getTipoCampo0() {
+  public function getTipoCampo() {
     return $this->hasOne(TipoCampo::class, ['id' => 'idTipoCampo']);
   }
 
-  public function getPropiedadOpcions() {
+  public function getOpciones() {
     return $this->hasMany(PropiedadOpcion::class, ['idPropiedad' => 'id']);
   }
 
-  public function getResultadoFormularioValors() {
+  public function getValores() {
     return $this->hasMany(ResultadoFormularioValor::class, ['idPropiedad' => 'id']);
   }
 }
