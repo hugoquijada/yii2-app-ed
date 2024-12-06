@@ -10,7 +10,7 @@ use Yii;
  * @property string $id
  * @property string $idPadre
  * @property string $nombre
- * @property string $url
+ * @property string $urlAbsoluta
  * @property string|null $icono
  * @property int $orden
  * @property string|null $creado
@@ -39,12 +39,12 @@ class Menu extends ModeloBase
   public function rules()
   {
     return [
-      [['id', 'idPadre', 'url'], 'required'],
+      [['id', 'idPadre', 'urlAbsoluta'], 'required'],
       [['orden'], 'default', 'value' => null],
       [['orden'], 'integer'],
       [['creado', 'modificado', 'eliminado'], 'safe'],
       [['id', 'idPadre'], 'string', 'max' => 50],
-      [['url', 'icono', 'nombre'], 'string', 'max' => 255],
+      [['urlAbsoluta', 'icono', 'nombre'], 'string', 'max' => 255],
       [['id'], 'unique'],
       [['idPadre'], 'exist', 'skipOnError' => true, 'targetClass' => Menu::class, 'targetAttribute' => ['idPadre' => 'id']],
     ];
@@ -59,7 +59,7 @@ class Menu extends ModeloBase
       'id' => 'ID',
       'idPadre' => 'Id Padre',
       'nombre' => 'Nombre',
-      'url' => 'Url',
+      'urlAbsoluta' => 'UrlAbsoluta',
       'icono' => 'Icono',
       'orden' => 'Orden',
       'creado' => 'Creado',
@@ -74,7 +74,7 @@ class Menu extends ModeloBase
       'id',
       'idPadre',
       'nombre',
-      'url',
+      'urlAbsoluta',
       'icono',
       'orden',
       'creado',
