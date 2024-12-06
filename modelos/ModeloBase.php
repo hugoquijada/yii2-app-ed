@@ -6,6 +6,10 @@ use Ramsey\Uuid\Uuid;
 
 class ModeloBase extends \yii\db\ActiveRecord {
 
+  public function load($data, $nombreFormulario = '') {
+    return parent::load($data, $nombreFormulario);
+  }
+
   public static function nombreSingular() {
     $nombre = new \ReflectionClass(static::class);
     $nombre = $nombre->getShortName();
