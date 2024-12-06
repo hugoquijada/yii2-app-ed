@@ -15,7 +15,7 @@ use Yii;
  * @property string|null $modificado
  * @property string|null $eliminado
  *
- * @property MenuFormulario[] $menuFormularios
+ * @property Menu[] $menus
  * @property Propiedad[] $propiedades
  * @property ResultadoFormulario[] $resultados
  */

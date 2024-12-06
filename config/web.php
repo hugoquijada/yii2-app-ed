@@ -71,7 +71,7 @@ if (YII_ENV_DEV) {
       'model' => [
         'class' => 'yii\gii\generators\model\Generator',
         'templates' => [
-          'test-generator' => '@app/_templates/default',
+          'test-generator' => '@edesarrollos/gii/generators/model/default',
         ]
       ]
     ]

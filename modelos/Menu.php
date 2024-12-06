@@ -17,10 +17,10 @@ use Yii;
  * @property string|null $modificado
  * @property string|null $eliminado
  *
- * @property Menu $padre
+ * @property Menu $menuPadre
  * @property MenuFormulario[] $menuFormularios
  * @property MenuUsuario[] $menuUsuarios
- * @property Menu[] $subMenus
+ * @property Menu[] $submenus
  */
 class Menu extends ModeloBase
 {
@@ -86,18 +86,18 @@ class Menu extends ModeloBase
   public function extraFields()
   {
     return [
-      'padre',
-      'subMenus',
+      'menuPadre',
+      'submenus',
     ];
   }
 
 
-  public function getPadre()
+  public function getMenuPadre()
   {
     return $this->hasOne(Menu::class, ['id' => 'idPadre']);
   }
 
-  public function getSubMenus()
+  public function getSubmenus()
   {
     return $this->hasMany(Menu::class, ['idPadre' => 'id']);
   }

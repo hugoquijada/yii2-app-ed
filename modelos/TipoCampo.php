@@ -27,6 +27,14 @@ class TipoCampo extends ModeloBase
     return 'TipoCampo';
   }
 
+  public static function nombreSingular(){
+    return 'Tipo de Campo';
+  }
+
+  public static function nombrePlural(){
+    return 'Tipos de Campos';
+  }
+
   /**
    * {@inheritdoc}
    */

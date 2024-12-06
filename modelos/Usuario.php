@@ -41,6 +41,14 @@ class Usuario extends \eDesarrollos\models\Usuario {
     return 'Usuario';
   }
 
+  public static function nombreSingular() {
+    return 'Usuario';
+  }
+
+  public static function nombrePlural() {
+    return 'Usuarios';
+  }
+
   /**
    * {@inheritdoc}
    */

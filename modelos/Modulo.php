@@ -25,7 +25,7 @@ class Modulo extends ModeloBase
   {
     return 'Modulo';
   }
-
+  
   /**
    * {@inheritdoc}
    */

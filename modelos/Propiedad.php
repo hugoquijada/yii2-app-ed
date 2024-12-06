@@ -37,6 +37,10 @@ class Propiedad extends ModeloBase
     return 'Propiedad';
   }
 
+  public static function nombrePlural(){
+    return "Propiedades";
+  }
+
   /**
    * {@inheritdoc}
    */

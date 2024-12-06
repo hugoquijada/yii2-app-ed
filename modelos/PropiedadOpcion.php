@@ -28,6 +28,16 @@ class PropiedadOpcion extends ModeloBase
     return 'PropiedadOpcion';
   }
 
+  public static function nombreSingular()
+  {
+    return 'Opcion';
+  }
+
+  public static function nombrePlural()
+  {
+    return "Opciones";
+  }
+
   /**
    * {@inheritdoc}
    */

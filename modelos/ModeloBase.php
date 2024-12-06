@@ -6,6 +6,18 @@ use Ramsey\Uuid\Uuid;
 
 class ModeloBase extends \yii\db\ActiveRecord {
 
+  public static function nombreSingular() {
+    $nombre = new \ReflectionClass(static::class);
+    $nombre = $nombre->getShortName();
+    return $nombre;
+  }
+
+  public static function nombrePlural() {
+    $nombre = new \ReflectionClass(static::class);
+    $nombre = $nombre->getShortName() . 's';
+    return $nombre;
+  }
+
   public function uuid() {
     $pk = static::primaryKey();
     if (is_array($pk) && count($pk) > 1) {
