@@ -37,16 +37,6 @@ class m241205_033549_agregando_tabla_menus extends Migration
             'eliminado' => $this->timestamp()->append("with time zone"),
         ]);
 
-        $this->createTable('MenuFormulario', [
-            'id' => $this->string(50)->notNull(),
-            'idMenu' => $this->string(50)->notNull(),
-            'idFormulario' => $this->string(50)->notNull(),
-
-            'creado' => $this->timestamp()->append("with time zone"),
-            'modificado' => $this->timestamp()->append("with time zone"),
-            'eliminado' => $this->timestamp()->append("with time zone"),
-        ]);
-
         //llaves primarias
         $this->addPrimaryKey("MenuPK", "Menu", "id");
         $this->addPrimaryKey("MenuUsuarioPK", "MenuUsuario", "id");
@@ -58,10 +48,6 @@ class m241205_033549_agregando_tabla_menus extends Migration
         $this->addForeignKey("MenuUsuarioIdMenuFK", "MenuUsuario", "idMenu", "Menu", "id");
         $this->addForeignKey("MenuUsuarioIdUsuarioFK", "MenuUsuario", "idUsuario", "Usuario", "id");
 
-        //llaves foraneas MenuFormulario
-        $this->addForeignKey("MenuFormularioIdMenuFK", "MenuFormulario", "idMenu", "Menu", "id");
-        $this->addForeignKey("MenuFormularioIdFormularioFK", "MenuFormulario", "idFormulario", "Formulario", "id");
-
     }
 
     /**
@@ -70,12 +56,9 @@ class m241205_033549_agregando_tabla_menus extends Migration
     public function safeDown()
     {
         $this->dropForeignKey("MenuIdPadreFK", "Menu");
-        $this->dropForeignKey("MenuFormularioIdMenuFK", "MenuFormulario");
-        $this->dropForeignKey("MenuFormularioIdFormularioFK", "MenuFormulario");
         $this->dropForeignKey("MenuUsuarioIdMenuFK", "MenuUsuario");
         $this->dropForeignKey("MenuUsuarioIdUsuarioFK", "MenuUsuario");
 
-        $this->dropTable("MenuFormulario");
         $this->dropTable("MenuUsuario");
         $this->dropTable("Menu");
     }

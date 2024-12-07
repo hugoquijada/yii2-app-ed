@@ -21,7 +21,6 @@ use Yii;
 * @property Formulario $formulario
 * @property TipoCampo $tipoCampo
 * @property PropiedadOpcion[] $opciones
-* @property ResultadoFormularioValor[] $valores
 */
 class Propiedad extends ModeloBase {
 
@@ -101,9 +100,5 @@ class Propiedad extends ModeloBase {
 
   public function getOpciones() {
     return $this->hasMany(PropiedadOpcion::class, ['idPropiedad' => 'id']);
-  }
-
-  public function getValores() {
-    return $this->hasMany(ResultadoFormularioValor::class, ['idPropiedad' => 'id']);
   }
 }

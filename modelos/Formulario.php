@@ -16,7 +16,6 @@ use Yii;
  *
  * @property MenuFormulario[] $menuFormularios
  * @property Propiedad[] $propiedades
- * @property ResultadoFormulario[] $resultadoFormularios
  */
 class Formulario extends ModeloBase
 {
@@ -73,25 +72,13 @@ class Formulario extends ModeloBase
   public function extraFields()
   {
     return [
-      'menuFormularios',
       'propiedades',
-      'resultadoFormularios',
     ];
   }
 
-
-  public function getMenuFormularios()
-  {
-    return $this->hasMany(MenuFormulario::class, ['idFormulario' => 'id']);
-  }
-    
   public function getPropiedades()
   {
     return $this->hasMany(Propiedad::class, ['idFormulario' => 'id']);
   }
 
-  public function getResultadoFormularios()
-  {
-    return $this->hasMany(ResultadoFormulario::class, ['idFormulario' => 'id']);
-  }
 }

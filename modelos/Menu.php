@@ -18,7 +18,6 @@ use Yii;
  * @property string|null $eliminado
  *
  * @property Menu $menuPadre
- * @property MenuFormulario[] $menuFormularios
  * @property MenuUsuario[] $menuUsuarios
  * @property Menu[] $submenus
  */
@@ -100,12 +99,6 @@ class Menu extends ModeloBase
   public function getSubmenus()
   {
     return $this->hasMany(Menu::class, ['idPadre' => 'id']);
-  }
-
-
-  public function getMenuFormularios()
-  {
-    return $this->hasMany(MenuFormulario::class, ['idMenu' => 'id']);
   }
 
   public function getMenuUsuarios()
