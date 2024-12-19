@@ -33,7 +33,7 @@ class m240718_041517_inicio extends Migration {
       "idUsuario" => $this->integer(),
       "nombre" => $this->string(100)->notNull(),
       "uuid" => $this->string(100),
-      "size" => $this->string(100),
+      "peso" => $this->integer(),
       "extension" => $this->string(5),
       "mimetype" => $this->string(100),
       "ruta" => $this->string(500),
