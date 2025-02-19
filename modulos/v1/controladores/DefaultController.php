@@ -2,9 +2,9 @@
 
 namespace v1\controladores;
 
-use eDesarrollos\rest\JsonController;
+use eDesarrollos\rest\AuthController;
 
-class DefaultController extends JsonController {
+class DefaultController extends AuthController {
 
   public $modelClass = '\app\modelos\Usuario';
 

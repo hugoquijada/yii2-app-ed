@@ -4,11 +4,10 @@ namespace v1\controladores;
 
 use app\modelos\Formulario;
 use eDesarrollos\data\Respuesta;
-use eDesarrollos\rest\JsonController;
+use eDesarrollos\rest\AuthController;
 use yii\db\Expression;
 
-class CrudController extends JsonController {
-
+class CrudController extends AuthController {
   const ELIMINADO = "eliminado";
 
   public function actionIndex() {

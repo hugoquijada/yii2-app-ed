@@ -2,9 +2,10 @@
 
 namespace v1\controladores;
 
-use eDesarrollos\rest\JsonController;
+use eDesarrollos\data\Respuesta;
+use eDesarrollos\rest\AuthController;
 
-class ModuloController extends JsonController
+class ModuloController extends AuthController
 {
 
   public $modelClass = '\app\modelos\Modulo';
@@ -24,5 +25,15 @@ class ModuloController extends JsonController
         ["ilike", "nombre", $buscar],
       ]);
     }
+  }
+
+  public function actionSelector(){
+    $query = $this->queryInicial;
+    
+    $query->select(['valor' => 'id', 'etiqueta' => 'nombre']);
+
+    $this->buscador($query, $this->req);
+
+    return new Respuesta($query, $this->limite, $this->pagina, $this->ordenar);
   }
 }

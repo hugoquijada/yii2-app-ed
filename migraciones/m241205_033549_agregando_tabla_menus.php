@@ -14,12 +14,12 @@ class m241205_033549_agregando_tabla_menus extends Migration
     {
         $this->createTable('Menu', [
             'id' => $this->string(50)->notNull(),
-            'idPadre' => $this->string(50)->notNull(),
+            'idPadre' => $this->string(50),
             
             'nombre' => $this->string(255)->notNull(),
             'urlAbsoluta' => $this->string(255)->notNull(),
             'icono' => $this->string(255),
-            'orden' => $this->integer()->notNull()->defaultValue(0),
+            'orden' => $this->integer(),
 
             'creado' => $this->timestamp()->append("with time zone"),
             'modificado' => $this->timestamp()->append("with time zone"),

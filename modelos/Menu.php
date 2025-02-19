@@ -38,7 +38,7 @@ class Menu extends ModeloBase
   public function rules()
   {
     return [
-      [['id', 'idPadre', 'urlAbsoluta'], 'required'],
+      [['id', 'urlAbsoluta'], 'required'],
       [['orden'], 'default', 'value' => null],
       [['orden'], 'integer'],
       [['creado', 'modificado', 'eliminado'], 'safe'],

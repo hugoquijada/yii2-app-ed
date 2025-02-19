@@ -4,11 +4,11 @@ namespace v1\controladores;
 
 use app\modelos\MenuFormulario;
 use eDesarrollos\data\Respuesta;
-use eDesarrollos\rest\JsonController;
+use eDesarrollos\rest\AuthController;
 use Yii;
 use yii\db\Expression;
 
-class FormularioController extends JsonController
+class FormularioController extends AuthController
 {
 
   public $modelClass = '\app\modelos\Formulario';
@@ -35,8 +35,6 @@ class FormularioController extends JsonController
     $id = trim($this->req->getBodyParam("id", ""));
     $modelo = null;
 
-    $menus = $this->req->getBodyParam("menus", []);
-
     if ($id !== "") {
       $modelo = $this->modelClass::findOne($id);
     }
@@ -59,23 +57,6 @@ class FormularioController extends JsonController
           ->mensaje("Hubo un problema al guardar el formulario");
       }
 
-      MenuFormulario::deleteAll(["idFormulario" => $modelo->id]);
-      foreach ($menus as $menuData) {
-        $menuFormulario = new MenuFormulario();
-        $menuFormulario->id = $menuFormulario->uuid();
-        $menuFormulario->idMenu = $menuData["idMenu"];
-        $menuFormulario->idFormulario = $modelo->id;
-        $menuFormulario->asignado = new Expression('now()');
-        $menuFormulario->creado = $menuData["creado"];
-
-        if (!$menuFormulario->save()) {
-          $transaccion->rollBack();
-          return (new Respuesta($menuData))
-            ->esError()
-            ->mensaje("Hubo un problema al guardar los menus del formulario");
-        }
-      }
-
       $transaccion->commit();
     } catch (\Exception $e) {
       $transaccion->rollBack();
@@ -87,5 +68,40 @@ class FormularioController extends JsonController
     $modelo->refresh();
     return (new Respuesta($modelo))
       ->mensaje("Formulario guardado");
+  }
+
+  public function actionListarTablas() {
+    $buscar = trim($this->req->getQueryParam("buscar", ""));
+    $tablas = Yii::$app->db->createCommand("SELECT * FROM pg_tables WHERE schemaname = 'public' AND tablename ILIKE '%{$buscar}%'")->queryAll();
+    
+    $tablas = array_map(function($tabla) {
+      return [
+        "id" => $tabla["tablename"],
+        "nombre" => $tabla["tablename"],
+      ];
+    }, $tablas);
+
+    return (new Respuesta($tablas))
+      ->mensaje("Tablas obtenidas");
+  }
+
+  public function actionListarCampos() {
+    $tabla = trim($this->req->getQueryParam("tabla", ""));
+    $campos = new \yii\db\Query();
+    $campos->select("column_name")
+      ->from("information_schema.columns")
+      ->where(["table_name" => $tabla])
+      ->andWhere(["column_name" => ["creado", "modificado", "eliminado", "id"]]);
+    
+    $campos = $campos->all();
+      $campos = array_map(function($campo) {
+      return [
+        "id" => $campo["column_name"],
+        "nombre" => $campo["column_name"],
+      ];
+    }, $campos);
+
+    return (new Respuesta($campos))
+      ->mensaje("Campos obtenidos");
   }
 }

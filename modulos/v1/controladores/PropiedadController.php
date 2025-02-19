@@ -12,10 +12,15 @@ class PropiedadController extends JsonController
   public function buscador(&$query, $request)
   {
     $id = $request->get($this->modeloID, "");
+    $idFormulario = $request->get("idFormulario", "");
     $buscar = $request->get("buscar", "");
 
     if ($id !== "") {
       $query->andWhere([$this->modeloID => $id]);
+    }
+
+    if ($idFormulario !== "") {
+      $query->andWhere(["idFormulario" => $idFormulario]);
     }
 
     if ($buscar !== "") {

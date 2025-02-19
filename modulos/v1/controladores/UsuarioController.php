@@ -111,6 +111,6 @@ class UsuarioController extends JsonController {
 
     $modelo->refresh();
     return (new Respuesta($modelo))
-      ->mensaje("Registro guardado");
+      ->mensaje("Usuario guardado");
   }
 }
