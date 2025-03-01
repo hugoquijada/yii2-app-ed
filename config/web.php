@@ -16,6 +16,7 @@ $config = [
     '@npm'   => '@vendor/npm-asset',
     '@excel' => '@app/modulos/excel',
     '@pdf' => '@app/modulos/pdf',
+    '@mail' => '@app/modulos/mail',
     '@word' => '@app/modulos/word',
     '@edesarrollos' => '@app/vendor/edesarrollos/yii2-ed/src',
   ],
@@ -34,8 +35,15 @@ $config = [
     'user' => [
       'identityClass' => 'app\modelos\Usuario',
       'enableAutoLogin' => false,
+      'enableSession' => false,
     ],
-    'mailer' => $mailer,
+    'mailer' => [
+      'class' => 'yii\swiftmailer\Mailer',
+      // send all mails to a file by default. You have to set
+      // 'useFileTransport' to false and configure a transport
+      // for the mailer to send real emails.
+      'useFileTransport' => true,
+    ],
     'log' => [
       'traceLevel' => YII_DEBUG ? 3 : 0,
       'targets' => [
@@ -57,6 +65,7 @@ $config = [
     'pdf' => ['class' => 'pdf\Modulo'],
     'excel' => ['class' => 'excel\Modulo'],
     'word' => ['class' => 'word\Modulo'],
+    'mail' => ['class' => 'mail\Modulo'],
   ]
 ];
 
@@ -68,6 +77,7 @@ if (YII_ENV_DEV) {
   $config['modules']['gii'] = ['class' => 'eDesarrollos\gii\Module'];
 
   $config['components']['urlManager']['baseUrl'] = '';
+  $config['modules']['mail'] = ['class' => 'mail\Modulo'];
 }
 
 return $config;

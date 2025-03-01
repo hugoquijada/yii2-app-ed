@@ -29,11 +29,37 @@ class ModuloController extends AuthController
 
   public function actionSelector(){
     $query = $this->queryInicial;
-    
-    $query->select(['valor' => 'id', 'etiqueta' => 'nombre']);
+    $ordenar = $this->ordenar;
 
     $this->buscador($query, $this->req);
 
-    return new Respuesta($query, $this->limite, $this->pagina, $this->ordenar);
+    if ($ordenar !== false && ($campo = trim($ordenar)) !== "") { //TODO: IMPLEMENTAR ESTO EN EL SERIALIZADOR
+      $separar = explode(",", $ordenar);
+      $ordenamiento = [];
+      foreach ($separar as $segmento) {
+        $exp = explode("-", trim($segmento));
+        $desc = false;
+        if (count($exp) > 1) {
+          $campo = $exp[0];
+          $desc = $exp[1] === 'desc';
+        }
+        $ordenamiento[$campo] = $desc ? SORT_DESC : SORT_ASC;
+      }
+      if (!empty($ordenamiento)) {
+        $query->orderBy($ordenamiento);
+      }
+    }
+
+    $total = $query->count();
+
+    $result = $query->select(['valor' => 'id', 'etiqueta' => 'nombre'])
+    ->limit($this->limite)
+    ->offset(($this->pagina - 1) * $this->limite)
+    ->asArray()
+    ->all();
+
+    $respuesta = new Respuesta($result);
+
+    return $respuesta;
   }
 }
