@@ -7,7 +7,7 @@ use eDesarrollos\rest\JsonController;
 class MenuController extends JsonController
 {
 
-  public $modelClass = '\app\modelos\Menu';
+  public $modelClass = '\app\modelos\Ruta';
 
   public function buscador(&$query, $request)
   {

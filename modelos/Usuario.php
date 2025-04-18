@@ -28,6 +28,7 @@ use yii\db\Query;
  * @property Media[] $media
  * @property Menu[] $menus
  * @property Permiso[] $permisos
+ * @property Ruta[] $rutas
  */
 class Usuario extends \eDesarrollos\models\Usuario {
 
@@ -115,6 +116,7 @@ class Usuario extends \eDesarrollos\models\Usuario {
       'permisos',
       'menus',
       'media',
+      'rutas',
     ];
   }
 
@@ -200,10 +202,6 @@ class Usuario extends \eDesarrollos\models\Usuario {
                 ->viaTable('ModuloPermisoUsuario', ['idUsuario' => 'id']);
   }
 
-  public function getMenus() {
-    return $this->hasMany(Menu::class, ['id' => 'idMenu'])->viaTable('MenuUsuario', ['idUsuario' => 'id']);
-  }
-  
   public function agregarClave($pwd) {
     $this->clave = Yii::$app->getSecurity()->generatePasswordHash($pwd);
   }
@@ -238,7 +236,6 @@ class Usuario extends \eDesarrollos\models\Usuario {
    * ]
    */
   public function cargarPermisos($permiso = null) {
-
     $noEstan = [];
     $permisosVacios = empty($this->_permisos);
     if (!$permisosVacios) {
