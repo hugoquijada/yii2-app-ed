@@ -4,14 +4,39 @@ namespace v1\controladores;
 
 use app\modelos\MenuUsuario;
 use app\modelos\PermisoUsuario;
+use app\modelos\RutaUsuario;
 use eDesarrollos\data\Respuesta;
-use eDesarrollos\rest\JsonController;
+use eDesarrollos\rest\AuthController;
 use Yii;
 use yii\db\Expression;
 
-class UsuarioController extends JsonController {
+class UsuarioController extends AuthController {
 
   public $modelClass = '\app\modelos\Usuario';
+
+  public function actionModelo(){
+    $modelo = new $this->modelClass();
+    $atributos = $modelo->attributeLabels();
+    $columnas = [];
+
+    foreach ($atributos as $key => $value) {
+      $columnas[] = [
+        'title' => $value,
+        'dataIndex' => $key,
+      ];
+    }
+
+    $defaultEndpoint = "/v1/{$this->id}";
+
+    return [
+      'nombrePlural' => $modelo::nombrePlural(),
+      'nombreSingular' => $modelo::nombreSingular(),
+      'endpoints' => [
+        'default' => $defaultEndpoint . '.json',
+      ],
+      'columnas' => $columnas,
+    ];
+  }
 
   public function buscador(&$query, $request) {
     $id = $request->get($this->modeloID, "");
@@ -41,12 +66,15 @@ class UsuarioController extends JsonController {
   {
     $id = trim($this->req->getBodyParam("id", ""));
     $modelo = null;
+    $pwd = trim($this->req->getBodyParam("pwd", ""));
+    $clave = '';
 
     $permisos = $this->req->getBodyParam("permisos", []);
     $menus = $this->req->getBodyParam("menus", []);
 
     if ($id !== "") {
       $modelo = $this->modelClass::findOne($id);
+      $clave = $modelo->clave;
     }
     if ($modelo === null) {
       $modelo = new $this->modelClass();
@@ -60,6 +88,13 @@ class UsuarioController extends JsonController {
     try {
       
       $modelo->load($this->req->getBodyParams(), '');
+      
+      if ($pwd !== '') {
+        $modelo->agregarClave($pwd);
+      } else {
+        $modelo->clave = $clave;
+      }
+      
       if (!$modelo->save()) {
         $transaccion->rollBack();
         return (new Respuesta($modelo))
@@ -84,20 +119,20 @@ class UsuarioController extends JsonController {
         }
       }
 
-      MenuUsuario::deleteAll(["idUsuario" => $modelo->id]);
+      RutaUsuario::deleteAll(["idUsuario" => $modelo->id]);
       foreach ($menus as $menuData) {
-        $menuUsuario = new MenuUsuario();
-        $menuUsuario->id = $menuUsuario->uuid();
-        $menuUsuario->idMenu = $menuData["idMenu"];
-        $menuUsuario->idUsuario = $modelo->id;
-        $menuUsuario->asignado = new Expression('now()');
-        $menuUsuario->creado = $menuData["creado"];
+        $rutaUsuario = new RutaUsuario();
+        $rutaUsuario->id = $rutaUsuario->uuid();
+        $rutaUsuario->idRuta = $menuData["idRuta"];
+        $rutaUsuario->idUsuario = $modelo->id;
+        $rutaUsuario->asignado = new Expression('now()');
+        $rutaUsuario->creado = $menuData["creado"];
 
-        if (!$menuUsuario->save()) {
+        if (!$rutaUsuario->save()) {
           $transaccion->rollBack();
-          return (new Respuesta($menuData))
+          return (new Respuesta($rutaUsuario))
             ->esError()
-            ->mensaje("Hubo un problema al guardar menus");
+            ->mensaje("Hubo un problema al guardar rutas");
         }
       }
 

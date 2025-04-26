@@ -5,10 +5,10 @@ namespace v1\controladores;
 use app\modelos\RefreshTokenUsuario;
 use app\modelos\Sesion;
 use eDesarrollos\data\Respuesta;
-use eDesarrollos\rest\JsonController;
+use eDesarrollos\rest\AuthController;
 use Yii;
 
-class RefrescarTokenController extends JsonController
+class RefrescarTokenController extends AuthController
 {
 
   public function actionGuardar()

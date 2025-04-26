@@ -7,7 +7,6 @@ use app\modelos\Sesion;
 use app\modelos\Usuario;
 use eDesarrollos\data\Respuesta;
 use eDesarrollos\rest\AuthController;
-use eDesarrollos\rest\JsonController;
 use Yii;
 
 class RefrescarUsuarioController extends AuthController

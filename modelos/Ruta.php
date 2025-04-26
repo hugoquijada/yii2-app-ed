@@ -23,7 +23,6 @@ use Yii;
 * @property Ruta[] $rutas
 */
 class Ruta extends ModeloBase {
-
   /**
   * {@inheritdoc}
   */

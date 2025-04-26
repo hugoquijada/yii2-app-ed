@@ -2,9 +2,9 @@
 
 namespace v1\controladores;
 
-use eDesarrollos\rest\JsonController;
+use eDesarrollos\rest\AuthController;
 
-class MenuController extends JsonController
+class RutaController extends AuthController
 {
 
   public $modelClass = '\app\modelos\Ruta';

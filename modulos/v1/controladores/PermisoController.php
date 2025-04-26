@@ -2,9 +2,9 @@
 
 namespace v1\controladores;
 
-use eDesarrollos\rest\JsonController;
+use eDesarrollos\rest\AuthController;
 
-class PermisoController extends JsonController
+class PermisoController extends AuthController
 {
 
   public $modelClass = '\app\modelos\ModuloPermiso';
