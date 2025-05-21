@@ -10,11 +10,13 @@ use eDesarrollos\rest\AuthController;
 use Yii;
 use yii\db\Expression;
 
-class UsuarioController extends AuthController {
+class UsuarioController extends AuthController
+{
 
   public $modelClass = '\app\modelos\Usuario';
 
-  public function actionModelo(){
+  public function actionModelo()
+  {
     $modelo = new $this->modelClass();
     $atributos = $modelo->attributeLabels();
     $columnas = [];
@@ -38,7 +40,8 @@ class UsuarioController extends AuthController {
     ];
   }
 
-  public function buscador(&$query, $request) {
+  public function buscador(&$query, $request)
+  {
     $id = $request->get($this->modeloID, "");
     $buscar = trim($request->get("buscar", ""));
     $estatus = trim($request->get("estatus", ""));
@@ -86,15 +89,15 @@ class UsuarioController extends AuthController {
 
     $transaccion = Yii::$app->db->beginTransaction();
     try {
-      
+
       $modelo->load($this->req->getBodyParams(), '');
-      
+
       if ($pwd !== '') {
         $modelo->agregarClave($pwd);
       } else {
         $modelo->clave = $clave;
       }
-      
+
       if (!$modelo->save()) {
         $transaccion->rollBack();
         return (new Respuesta($modelo))
@@ -102,7 +105,7 @@ class UsuarioController extends AuthController {
           ->mensaje("Hubo un problema al guardar el registro");
       }
 
-      PermisoUsuario::deleteAll(["idUsuario" => $modelo->id]);
+      PermisoUsuario::updateAll(['eliminado' => new Expression('now()')], ["idUsuario" => $modelo->id]);
       foreach ($permisos as $permisoData) {
         $permiso = new PermisoUsuario();
         $permiso->id = $permiso->uuid();
@@ -110,6 +113,7 @@ class UsuarioController extends AuthController {
         $permiso->idPermiso = $permisoData["id"];
         $permiso->asignado = new Expression('now()');
         $permiso->creado = $permisoData["creado"];
+        $permiso->eliminado = null;
 
         if (!$permiso->save()) {
           $transaccion->rollBack();
@@ -119,7 +123,7 @@ class UsuarioController extends AuthController {
         }
       }
 
-      RutaUsuario::deleteAll(["idUsuario" => $modelo->id]);
+      RutaUsuario::updateAll(['eliminado' => new Expression('now()')], ["idUsuario" => $modelo->id]);
       foreach ($menus as $menuData) {
         $rutaUsuario = new RutaUsuario();
         $rutaUsuario->id = $rutaUsuario->uuid();
@@ -127,7 +131,7 @@ class UsuarioController extends AuthController {
         $rutaUsuario->idUsuario = $modelo->id;
         $rutaUsuario->asignado = new Expression('now()');
         $rutaUsuario->creado = $menuData["creado"];
-
+        $rutaUsuario->eliminado = null;
         if (!$rutaUsuario->save()) {
           $transaccion->rollBack();
           return (new Respuesta($rutaUsuario))
