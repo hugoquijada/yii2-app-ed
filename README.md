@@ -7,17 +7,28 @@
 </p>
 
 Proyecto Base de eDesarrollos
+=============================
 
-Instalación (Pendiente)
-------------
+Instalación
+-----------
 
+Para instalar el proyecto, utiliza el siguiente comando:
+
+```bash
+composer create-project --prefer-dist edesarrollos/yii2-app-ed
 ```
-php composer.phar create-project --prefer-dist edesarrollos/yii2-app-ed
-```
 
-Iniciar el servidor web
-------------
+Servidor Web de Desarrollo
+--------------------------
 
-```
+Para iniciar el servidor local:
+
+```bash
 php index.php
 ```
+
+Estructura de Configuración
+---------------------------
+
+- `config/params.php`: Contiene la configuración general. La `jwt.key` se lee dinámicamente desde el archivo secreto local.
+- `config/db.php`: Configuración de la base de datos (ignorado por Git, debe configurarse por entorno).
