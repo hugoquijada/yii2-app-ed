@@ -48,11 +48,13 @@
   },
   "scripts": {
     "post-install-cmd": [
-      "yii\\composer\\Installer::postInstall"
+      "yii\\composer\\Installer::postInstall",
+      "php scripts/set-jwt-key.php"
     ],
     "post-create-project-cmd": [
       "yii\\composer\\Installer::postCreateProject",
-      "yii\\composer\\Installer::postInstall"
+      "yii\\composer\\Installer::postInstall",
+      "php scripts/set-jwt-key.php"
     ]
   },
   "extra": {
