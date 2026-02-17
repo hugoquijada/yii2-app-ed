@@ -30,8 +30,7 @@ use yii\db\Query;
  * @property Permiso[] $permisos
  * @property Ruta[] $rutas
  */
-class Usuario extends \eDesarrollos\models\Usuario
-{
+class Usuario extends \eDesarrollos\models\Usuario {
 
   public const ACTIVO = 1;
   public const INACTIVO = 0;
@@ -39,26 +38,22 @@ class Usuario extends \eDesarrollos\models\Usuario
   /**
    * {@inheritdoc}
    */
-  public static function tableName()
-  {
+  public static function tableName() {
     return 'Usuario';
   }
 
-  public static function nombreSingular()
-  {
+  public static function nombreSingular() {
     return 'Usuario';
   }
 
-  public static function nombrePlural()
-  {
+  public static function nombrePlural() {
     return 'Usuarios';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function rules()
-  {
+  public function rules() {
     return [
       [['id', 'correo', 'clave', 'nombre', 'apellidos', 'rol'], 'required'],
       [['estatus'], 'default', 'value' => null],
@@ -75,8 +70,7 @@ class Usuario extends \eDesarrollos\models\Usuario
   /**
    * {@inheritdoc}
    */
-  public function attributeLabels()
-  {
+  public function attributeLabels() {
     return [
       'id' => 'ID',
       'correo' => 'Correo',
@@ -95,8 +89,7 @@ class Usuario extends \eDesarrollos\models\Usuario
     ];
   }
 
-  public function fields()
-  {
+  public function fields() {
     return [
       'id',
       'correo',
@@ -115,8 +108,7 @@ class Usuario extends \eDesarrollos\models\Usuario
     ];
   }
 
-  public function extraFields()
-  {
+  public function extraFields() {
     return [
       'permisos',
       'menus',
@@ -125,8 +117,7 @@ class Usuario extends \eDesarrollos\models\Usuario
     ];
   }
 
-  public function addRefreshToken()
-  {
+  public function addRefreshToken() {
     $refreshToken = new RefreshTokenUsuario();
     $refreshToken->idUsuario = $this->id;
     $refreshToken->token = $this->uuid();
@@ -139,8 +130,7 @@ class Usuario extends \eDesarrollos\models\Usuario
     return $refreshToken->token;
   }
 
-  public function removeRefreshToken($token)
-  {
+  public function removeRefreshToken($token) {
     $refreshToken = RefreshTokenUsuario::find()
       ->andWhere(["token" => $token])
       ->andWhere(["idUsuario" => $this->id])
@@ -159,35 +149,29 @@ class Usuario extends \eDesarrollos\models\Usuario
    *
    * @return \yii\db\ActiveQuery
    */
-  public function getMedia()
-  {
+  public function getMedia() {
     return $this->hasMany(Media::class, ['idUsuario' => 'id']);
   }
 
-  public function getPermisos()
-  {
+  public function getPermisos() {
     return $this->hasMany(ModuloPermiso::class, ['id' => 'idPermiso'])
       ->viaTable('ModuloPermisoUsuario', ['idUsuario' => 'id']);
   }
 
-  public function agregarClave($pwd)
-  {
+  public function agregarClave($pwd) {
     $this->clave = Yii::$app->getSecurity()->generatePasswordHash($pwd);
   }
 
-  public function validarClave($pwd)
-  {
+  public function validarClave($pwd) {
     return Yii::$app->getSecurity()->validatePassword($pwd, $this->clave);
   }
-
 
   /**
    * Consulta si el usuario cuenta con el permiso proporcionado.
    * @param string $permiso Valor del permiso a evaluar.
    * @return bool Regresa cierto si cuenta con permiso, de lo contrario, regresa falso.
    */
-  public function tienePermiso($permiso = null)
-  {
+  public function tienePermiso($permiso = null) {
     if ($permiso === null) {
       return false;
     }
@@ -206,8 +190,7 @@ class Usuario extends \eDesarrollos\models\Usuario
    *  'clave_permiso_no_encontrado' => false
    * ]
    */
-  public function cargarPermisos($permiso = null)
-  {
+  public function cargarPermisos($permiso = null) {
     $noEstan = [];
     $permisosVacios = empty($this->_permisos);
     if (!$permisosVacios) {
@@ -260,8 +243,7 @@ class Usuario extends \eDesarrollos\models\Usuario
     return $this->_permisos;
   }
 
-  public function validarPerfilPermisos()
-  {
+  public function validarPerfilPermisos() {
     $permisos = $this->cargarPermisos();
 
     $flag = false;
