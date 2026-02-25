@@ -2,11 +2,10 @@
 
 namespace pdf;
 
-class Modulo extends \yii\base\Module {
+class Modulo extends \eDesarrollos\base\Modulo {
 
   /**
    * {@inheritdoc}
    */
   public $controllerNamespace = 'pdf\controladores';
-
 }

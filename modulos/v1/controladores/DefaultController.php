@@ -2,44 +2,34 @@
 
 namespace v1\controladores;
 
-use eDesarrollos\rest\AuthController;
+use eDesarrollos\data\Respuesta;
+use eDesarrollos\rest\JsonController;
+use yii\web\Response;
 
-class DefaultController extends AuthController {
+class DefaultController extends JsonController {
 
-  public $modelClass = '\app\modelos\Usuario';
+  public function actions() {
+    return [
+      'error' => [
+        'class' => 'yii\web\ErrorAction',
+      ],
+    ];
+  }
 
-  /*
+  public function beforeAction($action) {
+    $resultado = parent::beforeAction($action);
+    if ($action->id === 'error') {
+      \Yii::$app->response->format = Response::FORMAT_HTML;
+    }
+
+    return $resultado;
+  }
+
   public function actionIndex() {
     $formato = $this->req->get("formato");
-    if($formato === "json") {
-      return $this->actionConsulta();
-    } elseif($formato === "pdf") {
-      return $this->actionPdf();
-    } elseif($formato === "xlsx") {
-      return $this->actionExcel();
-    }
-  }
 
-  public function actionConsulta() {
-    return new Respuesta(["accion" => "Index"]);
-  }
+    throw new \yii\web\ForbiddenHttpException("mensaje");
 
-  public function actionGuardar() {
-    $formato = $this->req->get("formato");
-    return new Respuesta(["accion" => "Guardar", "formato" => $formato]);
+    return new Respuesta(["Hola" => "mundo"]);
   }
-
-  public function actionEliminar() {
-    $formato = $this->req->get("formato");
-    return new Respuesta(["accion" => "Eliminar", "formato" => $formato]);
-  }
-
-  public function actionPdf() {
-    return new Respuesta(["accion" => "Pdf"]);
-  }
-
-  public function actionExcel() {
-    return new Respuesta(["accion" => "Excel"]);
-  }
-  */
 }

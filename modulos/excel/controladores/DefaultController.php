@@ -2,11 +2,11 @@
 
 namespace excel\controladores;
 
-use eDesarrollos\web\ExcelController;
+use eDesarrollos\rest\JsonController;
 
-class DefaultController extends ExcelController {
+class DefaultController extends JsonController {
 
   public function actionIndex() {
-    
+    return "Hola mundo";
   }
 }
