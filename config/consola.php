@@ -7,11 +7,12 @@ $mailer = require __DIR__ . '/correo.php';
 $config = [
   'id' => 'basic-console',
   'basePath' => dirname(__DIR__),
-  'bootstrap' => ['log'],
+  'bootstrap' => ['log', 'mail'],
   'controllerNamespace' => 'app\comandos',
   'aliases' => [
     '@excel' => '@app/modulos/excel',
     '@pdf' => '@app/modulos/pdf',
+    '@mail' => '@edesarrollos/mail',
     '@word' => '@app/modulos/word',
     '@edesarrollos' => '@app/vendor/edesarrollos/yii2-ed/src',
   ],
@@ -37,6 +38,9 @@ $config = [
     ]
   ],
   'params' => $params,
+  'modules' => [
+    'mail' => ['class' => 'eDesarrollos\mail\Module'],
+  ],
 ];
 
 if (YII_ENV_DEV) {
