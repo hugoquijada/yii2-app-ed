@@ -12,7 +12,7 @@ $config = [
   'aliases' => [
     '@excel' => '@app/modulos/excel',
     '@pdf' => '@app/modulos/pdf',
-    '@mail' => '@edesarrollos/mail',
+    '@mail' => '@app/mail',
     '@word' => '@app/modulos/word',
     '@edesarrollos' => '@app/vendor/edesarrollos/yii2-ed/src',
   ],
@@ -35,7 +35,10 @@ $config = [
     'migrate' => [
       'class' => 'yii\console\controllers\MigrateController',
       'migrationPath' => '@app/migraciones',
-    ]
+    ],
+    'openapi' => [
+      'class' => 'eDesarrollos\openapi\comandos\OpenapiController',
+    ],
   ],
   'params' => $params,
   'modules' => [
