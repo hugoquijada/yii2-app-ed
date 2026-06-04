@@ -11,6 +11,10 @@ use Yii;
 
 class RefrescarUsuarioController extends AuthController {
 
+  public static function mostrarEnOpenapi(): bool {
+    return false;
+  }
+
   public function actionIndex() {
     $usuario = $this->usuario;
 

@@ -10,6 +10,10 @@ use Yii;
 
 class RefrescarTokenController extends AuthController {
 
+  public static function mostrarEnOpenapi(): bool {
+    return false;
+  }
+
   public function actionGuardar() {
     $req = Yii::$app->getRequest();
 
