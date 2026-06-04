@@ -18,22 +18,19 @@ use Yii;
  * @property Ruta $ruta
  * @property Usuario $usuario
  */
-class RutaUsuario extends ModeloBase
-{
+class RutaUsuario extends ModeloBase {
 
   /**
    * {@inheritdoc}
    */
-  public static function tableName()
-  {
+  public static function tableName() {
     return 'RutaUsuario';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function rules()
-  {
+  public function rules() {
     return [
       [['asignado', 'creado', 'modificado', 'eliminado'], 'default', 'value' => null],
       [['id', 'idRuta', 'idUsuario'], 'required'],
@@ -48,8 +45,7 @@ class RutaUsuario extends ModeloBase
   /**
    * {@inheritdoc}
    */
-  public function attributeLabels()
-  {
+  public function attributeLabels() {
     return [
       'id' => 'ID',
       'idRuta' => 'Id Ruta',
@@ -61,8 +57,11 @@ class RutaUsuario extends ModeloBase
     ];
   }
 
-  public function fields()
-  {
+  public static function mostrarEnOpenapi(): bool {
+    return false;
+  }
+
+  public function fields() {
     return [
       'id',
       'idRuta',
@@ -74,8 +73,7 @@ class RutaUsuario extends ModeloBase
     ];
   }
 
-  public function extraFields()
-  {
+  public function extraFields() {
     return [
       'ruta',
       'usuario',
@@ -83,13 +81,11 @@ class RutaUsuario extends ModeloBase
   }
 
 
-  public function getRuta()
-  {
+  public function getRuta() {
     return $this->hasOne(Ruta::class, ['id' => 'idRuta']);
   }
 
-  public function getUsuario()
-  {
+  public function getUsuario() {
     return $this->hasOne(Usuario::class, ['id' => 'idUsuario']);
   }
 }

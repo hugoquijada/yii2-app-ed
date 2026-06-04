@@ -2,31 +2,32 @@
 
 namespace app\modelos;
 
+use Override;
 use Yii;
 
 /**
-* Clase modelo para la tabla "Formulario".
-*
-* @property string $id
-* @property string $nombre
-* @property string $endpoint //Endpoint al que se hará el post de los datos del formulario
-* @property string|null $items //Array de FilaProps > ColumnaProps > IFormRendererItem en el frontend
-* @property string|null $creado
-* @property string|null $modificado
-* @property string|null $eliminado
-*/
+ * Clase modelo para la tabla "Formulario".
+ *
+ * @property string $id
+ * @property string $nombre
+ * @property string $endpoint //Endpoint al que se hará el post de los datos del formulario
+ * @property string|null $items //Array de FilaProps > ColumnaProps > IFormRendererItem en el frontend
+ * @property string|null $creado
+ * @property string|null $modificado
+ * @property string|null $eliminado
+ */
 class Formulario extends ModeloBase {
 
   /**
-  * {@inheritdoc}
-  */
+   * {@inheritdoc}
+   */
   public static function tableName() {
     return 'Formulario';
   }
 
   /**
-  * {@inheritdoc}
-  */
+   * {@inheritdoc}
+   */
   public function rules() {
     return [
       [['items', 'creado', 'modificado', 'eliminado'], 'default', 'value' => null],
@@ -38,8 +39,8 @@ class Formulario extends ModeloBase {
   }
 
   /**
-  * {@inheritdoc}
-  */
+   * {@inheritdoc}
+   */
   public function attributeLabels() {
     return [
       'id' => 'ID',
@@ -52,7 +53,11 @@ class Formulario extends ModeloBase {
     ];
   }
 
-  public function fields () {
+  public static function mostrarEnOpenapi(): bool {
+    return false;
+  }
+
+  public function fields() {
     return [
       'id',
       'nombre',
@@ -65,8 +70,6 @@ class Formulario extends ModeloBase {
   }
 
   public function extraFields() {
-    return [
-    ];
+    return [];
   }
-
 }

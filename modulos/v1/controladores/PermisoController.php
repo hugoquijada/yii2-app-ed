@@ -4,13 +4,11 @@ namespace v1\controladores;
 
 use eDesarrollos\rest\AuthController;
 
-class PermisoController extends AuthController
-{
+class PermisoController extends AuthController {
 
-  public $modelClass = '\app\modelos\ModuloPermiso';
+  public $modelClass = \app\modelos\ModuloPermiso::class;
 
-  public function buscador(&$query, $request)
-  {
+  public function buscador(&$query, $request) {
     $id = $request->get($this->modeloID, "");
     $buscar = $request->get("buscar", "");
 

@@ -16,22 +16,19 @@ use Yii;
  *
  * @property Usuario $usuario
  */
-class RefreshTokenUsuario extends \yii\db\ActiveRecord
-{
+class RefreshTokenUsuario extends \yii\db\ActiveRecord {
   /**
    * {@inheritdoc}
    */
 
-  public static function tableName()
-  {
+  public static function tableName() {
     return 'RefreshTokenUsuario';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function rules()
-  {
+  public function rules() {
     return [
       [['token'], 'required'],
       [['expiracion', 'creado', 'eliminado'], 'safe'],
@@ -44,8 +41,7 @@ class RefreshTokenUsuario extends \yii\db\ActiveRecord
   /**
    * {@inheritdoc}
    */
-  public function attributeLabels()
-  {
+  public function attributeLabels() {
     return [
       'token' => 'Token',
       'idUsuario' => 'Id Usuario',
@@ -55,8 +51,11 @@ class RefreshTokenUsuario extends \yii\db\ActiveRecord
     ];
   }
 
-  public function fields()
-  {
+  public static function mostrarEnOpenapi(): bool {
+    return false;
+  }
+
+  public function fields() {
     return [
       'token',
       'idUsuario',
@@ -66,8 +65,7 @@ class RefreshTokenUsuario extends \yii\db\ActiveRecord
     ];
   }
 
-  public function extraFields()
-  {
+  public function extraFields() {
     return [
       'usuario',
     ];
@@ -79,8 +77,7 @@ class RefreshTokenUsuario extends \yii\db\ActiveRecord
    *
    * @return \yii\db\ActiveQuery
    */
-  public function getUsuario()
-  {
+  public function getUsuario() {
     return $this->hasOne(Usuario::class, ['id' => 'idUsuario']);
   }
 }

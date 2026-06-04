@@ -8,6 +8,10 @@ use yii\web\Response;
 
 class DefaultController extends JsonController {
 
+  public static function mostrarEnOpenapi(): bool {
+    return false;
+  }
+
   public function actions() {
     return [
       'error' => [

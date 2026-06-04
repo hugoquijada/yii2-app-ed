@@ -4,13 +4,15 @@ namespace v1\controladores;
 
 use eDesarrollos\rest\AuthController;
 
-class RutaController extends AuthController
-{
+class RutaController extends AuthController {
 
-  public $modelClass = '\app\modelos\Ruta';
+  public static function mostrarEnOpenapi(): bool {
+    return false;
+  }
 
-  public function buscador(&$query, $request)
-  {
+  public $modelClass = \app\modelos\Ruta::class;
+
+  public function buscador(&$query, $request) {
     $id = $request->get($this->modeloID, "");
     $buscar = $request->get("buscar", "");
 

@@ -8,11 +8,9 @@ use eDesarrollos\data\Respuesta;
 use eDesarrollos\rest\AuthController;
 use Yii;
 
-class RefrescarTokenController extends AuthController
-{
+class RefrescarTokenController extends AuthController {
 
-  public function actionGuardar()
-  {
+  public function actionGuardar() {
     $req = Yii::$app->getRequest();
 
     $token = trim($req->getBodyParam("refreshToken", ""));

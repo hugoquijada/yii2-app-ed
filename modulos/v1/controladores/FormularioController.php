@@ -6,12 +6,11 @@ use eDesarrollos\data\Respuesta;
 use eDesarrollos\rest\AuthController;
 use yii\db\Expression;
 
-class FormularioController extends AuthController
-{
-  public $modelClass = '\app\modelos\Formulario';
+class FormularioController extends AuthController {
 
-  public function actionGuardar()
-  {
+  public $modelClass = \app\modelos\Formulario::class;
+
+  public function actionGuardar() {
     $id = trim($this->req->getBodyParam("id", ""));
     $modelo = null;
 
@@ -27,7 +26,7 @@ class FormularioController extends AuthController
     }
 
     $modelo->load($this->req->getBodyParams(), '');
-    
+
     if (!$modelo->save()) {
       return (new Respuesta($modelo))
         ->mensaje("Hubo un problema al guardar el {$this->nombreSingular}");
@@ -38,8 +37,7 @@ class FormularioController extends AuthController
       ->mensaje("{$this->nombreSingular} guardado");
   }
 
-  public function buscador(&$query, $request)
-  {
+  public function buscador(&$query, $request) {
     $id = $request->get($this->modeloID, "");
     $buscar = $request->get("buscar", "");
 

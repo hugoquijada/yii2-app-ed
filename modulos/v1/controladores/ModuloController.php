@@ -5,13 +5,11 @@ namespace v1\controladores;
 use eDesarrollos\data\Respuesta;
 use eDesarrollos\rest\AuthController;
 
-class ModuloController extends AuthController
-{
+class ModuloController extends AuthController {
 
-  public $modelClass = '\app\modelos\Modulo';
+  public $modelClass = \app\modelos\Modulo::class;
 
-  public function buscador(&$query, $request)
-  {
+  public function buscador(&$query, $request) {
     $id = $request->get($this->modeloID, "");
     $buscar = $request->get("buscar", "");
 
@@ -27,7 +25,7 @@ class ModuloController extends AuthController
     }
   }
 
-  public function actionSelector(){
+  public function actionSelector() {
     $query = $this->queryInicial;
     $ordenar = $this->ordenar;
 
@@ -53,10 +51,10 @@ class ModuloController extends AuthController
     $total = $query->count();
 
     $result = $query->select(['valor' => 'id', 'etiqueta' => 'nombre'])
-    ->limit($this->limite)
-    ->offset(($this->pagina - 1) * $this->limite)
-    ->asArray()
-    ->all();
+      ->limit($this->limite)
+      ->offset(($this->pagina - 1) * $this->limite)
+      ->asArray()
+      ->all();
 
     $respuesta = new Respuesta($result);
 

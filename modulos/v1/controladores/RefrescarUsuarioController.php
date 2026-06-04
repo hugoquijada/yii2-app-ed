@@ -9,18 +9,15 @@ use eDesarrollos\data\Respuesta;
 use eDesarrollos\rest\AuthController;
 use Yii;
 
-class RefrescarUsuarioController extends AuthController
-{
+class RefrescarUsuarioController extends AuthController {
 
-  public function actionIndex()
-  {
+  public function actionIndex() {
     $usuario = $this->usuario;
 
     $modelo = Sesion::find()
       ->andWhere(["id" => $usuario->id])
       ->andWhere('eliminado is null')
       ->one();
-
 
     return new Respuesta($modelo);
   }

@@ -4,9 +4,7 @@ namespace v1\controladores;
 
 use eDesarrollos\rest\AuthController;
 
-class ModuloPermisoController extends AuthController
-{
+class ModuloPermisoController extends AuthController {
 
-  public $modelClass = '\app\modelos\ModuloPermiso';
-
+  public $modelClass = \app\modelos\ModuloPermiso::class;
 }

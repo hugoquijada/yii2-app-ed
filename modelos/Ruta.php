@@ -5,34 +5,34 @@ namespace app\modelos;
 use Yii;
 
 /**
-* Clase modelo para la tabla "Ruta".
-*
-* @property string $id
-* @property string|null $idPadre
-* @property string $nombre
-* @property string $urlAbsoluta
-* @property string|null $icono
-* @property int|null $orden
-* @property bool $visible Indica si la ruta debe ser visible en el menu lateral
-* @property string|null $creado
-* @property string|null $modificado
-* @property string|null $eliminado
-*
-* @property Ruta $padre
-* @property RutaUsuario[] $rutaUsuarios
-* @property Ruta[] $rutas
-*/
+ * Clase modelo para la tabla "Ruta".
+ *
+ * @property string $id
+ * @property string|null $idPadre
+ * @property string $nombre
+ * @property string $urlAbsoluta
+ * @property string|null $icono
+ * @property int|null $orden
+ * @property bool $visible Indica si la ruta debe ser visible en el menu lateral
+ * @property string|null $creado
+ * @property string|null $modificado
+ * @property string|null $eliminado
+ *
+ * @property Ruta $padre
+ * @property RutaUsuario[] $rutaUsuarios
+ * @property Ruta[] $rutas
+ */
 class Ruta extends ModeloBase {
   /**
-  * {@inheritdoc}
-  */
+   * {@inheritdoc}
+   */
   public static function tableName() {
     return 'Ruta';
   }
 
   /**
-  * {@inheritdoc}
-  */
+   * {@inheritdoc}
+   */
   public function rules() {
     return [
       [['idPadre', 'icono', 'orden', 'creado', 'modificado', 'eliminado'], 'default', 'value' => null],
@@ -50,8 +50,8 @@ class Ruta extends ModeloBase {
   }
 
   /**
-  * {@inheritdoc}
-  */
+   * {@inheritdoc}
+   */
   public function attributeLabels() {
     return [
       'id' => 'ID',
@@ -67,7 +67,11 @@ class Ruta extends ModeloBase {
     ];
   }
 
-  public function fields () {
+  public static function mostrarEnOpenapi(): bool {
+    return false;
+  }
+
+  public function fields() {
     return [
       'id',
       'idPadre',

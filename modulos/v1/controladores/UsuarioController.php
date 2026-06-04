@@ -10,13 +10,11 @@ use eDesarrollos\rest\AuthController;
 use Yii;
 use yii\db\Expression;
 
-class UsuarioController extends AuthController
-{
+class UsuarioController extends AuthController {
 
-  public $modelClass = '\app\modelos\Usuario';
+  public $modelClass = \app\modelos\Usuario::class;
 
-  public function actionModelo()
-  {
+  public function actionModelo() {
     $modelo = new $this->modelClass();
     $atributos = $modelo->attributeLabels();
     $columnas = [];
@@ -40,8 +38,7 @@ class UsuarioController extends AuthController
     ];
   }
 
-  public function buscador(&$query, $request)
-  {
+  public function buscador(&$query, $request) {
     $id = $request->get($this->modeloID, "");
     $buscar = trim($request->get("buscar", ""));
     $estatus = trim($request->get("estatus", ""));
@@ -65,8 +62,7 @@ class UsuarioController extends AuthController
     }
   }
 
-  public function actionGuardar()
-  {
+  public function actionGuardar() {
     $id = trim($this->req->getBodyParam("id", ""));
     $modelo = null;
     $pwd = trim($this->req->getBodyParam("pwd", ""));
