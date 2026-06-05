@@ -10,11 +10,11 @@ $config = [
   'bootstrap' => ['log', 'mail'],
   'controllerNamespace' => 'app\comandos',
   'aliases' => [
-    '@excel' => '@app/modulos/excel',
-    '@pdf' => '@app/modulos/pdf',
-    '@mail' => '@app/mail',
-    '@word' => '@app/modulos/word',
+    '@docs' => '@app/modulos/docs',
     '@edesarrollos' => '@app/vendor/edesarrollos/yii2-ed/src',
+    '@mail' => '@app/mail',
+    '@publico' => '@app/publico',
+    '@recursos' => '@app/publico/recursos',
   ],
   'components' => [
     'cache' => [

@@ -55,7 +55,7 @@ class m240718_041517_inicio extends Migration {
 
     $this->addPrimaryKey("ModuloPK", 'Modulo', "id");
 
-    $this->createTable("ModuloPermiso", [
+    $this->createTable("Permiso", [
       "id" => $this->string(36)->notNull(),
       "idModulo" => $this->string(50),
       "nombre" => $this->string(200),
@@ -65,10 +65,10 @@ class m240718_041517_inicio extends Migration {
       "eliminado" => $this->timestamp()->append("with time zone"),
     ]);
 
-    $this->addPrimaryKey("ModuloPermisoPK", "ModuloPermiso", "id");
-    $this->addForeignKey("ModuloPermisoIdModuloFK", "ModuloPermiso", "idModulo", "Modulo", "id");
+    $this->addPrimaryKey("PermisoPK", "Permiso", "id");
+    $this->addForeignKey("PermisoIdModuloFK", "Permiso", "idModulo", "Modulo", "id");
 
-    $this->createTable("ModuloPermisoUsuario", [
+    $this->createTable("PermisoUsuario", [
       "id" => $this->string(36)->notNull(),
       "idPermiso" => $this->string(36),
       "idUsuario" => $this->string(36),
@@ -78,20 +78,20 @@ class m240718_041517_inicio extends Migration {
       "eliminado" => $this->timestamp()->append("with time zone"),
     ]);
 
-    $this->addPrimaryKey("MPUidPermisoIdUsuarioPK", "ModuloPermisoUsuario", "id");
-    $this->addForeignKey("MPUidPermisoFK", "ModuloPermisoUsuario", "idPermiso", "ModuloPermiso", "id");
-    $this->addForeignKey("MPUidUsuarioFK", "ModuloPermisoUsuario", "idUsuario", "Usuario", "id");
+    $this->addPrimaryKey("PUidPermisoIdUsuarioPK", "PermisoUsuario", "id");
+    $this->addForeignKey("PUidPermisoFK", "PermisoUsuario", "idPermiso", "Permiso", "id");
+    $this->addForeignKey("PUidUsuarioFK", "PermisoUsuario", "idUsuario", "Usuario", "id");
   }
 
   /**
    * {@inheritdoc}
    */
   public function safeDown() {
-    $this->dropForeignKey("MPUidUsuarioFK", "ModuloPermisoUsuario");
-    $this->dropForeignKey("MPUidPermisoFK", "ModuloPermisoUsuario");
-    $this->dropTable("ModuloPermisoUsuario");
-    $this->dropForeignKey("ModuloPermisoIdModuloFK", "ModuloPermiso");
-    $this->dropTable("ModuloPermiso");
+    $this->dropForeignKey("PUidUsuarioFK", "PermisoUsuario");
+    $this->dropForeignKey("PUidPermisoFK", "PermisoUsuario");
+    $this->dropTable("PermisoUsuario");
+    $this->dropForeignKey("PermisoIdModuloFK", "Permiso");
+    $this->dropTable("Permiso");
     $this->dropTable("Modulo");
 
     $this->dropTable('Media');

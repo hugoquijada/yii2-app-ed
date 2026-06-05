@@ -20,22 +20,19 @@ use Yii;
  * @property string|null $modificado
  * @property string|null $eliminado
  */
-class Media extends ModeloBase
-{
+class Media extends ModeloBase {
 
   /**
    * {@inheritdoc}
    */
-  public static function tableName()
-  {
+  public static function tableName() {
     return 'Media';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function rules()
-  {
+  public function rules() {
     return [
       [['id', 'nombre'], 'required'],
       [['idUsuario'], 'default', 'value' => null],
@@ -52,8 +49,7 @@ class Media extends ModeloBase
   /**
    * {@inheritdoc}
    */
-  public function attributeLabels()
-  {
+  public function attributeLabels() {
     return [
       'id' => 'ID',
       'idUsuario' => 'Id Usuario',
@@ -70,8 +66,7 @@ class Media extends ModeloBase
     ];
   }
 
-  public function fields()
-  {
+  public function fields() {
     return [
       'id',
       'idUsuario',
@@ -88,8 +83,7 @@ class Media extends ModeloBase
     ];
   }
 
-  public function extraFields()
-  {
+  public function extraFields() {
     return [];
   }
 }

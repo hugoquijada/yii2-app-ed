@@ -2,15 +2,14 @@
 
 namespace v1\controladores;
 
-use app\modelos\MenuUsuario;
 use app\modelos\PermisoUsuario;
-use app\modelos\RutaUsuario;
 use eDesarrollos\data\Respuesta;
 use eDesarrollos\rest\AuthController;
+use eDesarrollos\rest\JsonController;
 use Yii;
 use yii\db\Expression;
 
-class UsuarioController extends AuthController {
+class UsuarioController extends JsonController {
 
   public $modelClass = \app\modelos\Usuario::class;
 
@@ -62,14 +61,13 @@ class UsuarioController extends AuthController {
     }
   }
 
-  public function actionGuardar() {
+  public function actionPost() {
     $id = trim($this->req->getBodyParam("id", ""));
     $modelo = null;
     $pwd = trim($this->req->getBodyParam("pwd", ""));
     $clave = '';
 
     $permisos = $this->req->getBodyParam("permisos", []);
-    $menus = $this->req->getBodyParam("menus", []);
 
     if ($id !== "") {
       $modelo = $this->modelClass::findOne($id);
@@ -116,23 +114,6 @@ class UsuarioController extends AuthController {
           return (new Respuesta($permisoData))
             ->esError()
             ->mensaje("Hubo un problema al guardar permisos");
-        }
-      }
-
-      RutaUsuario::updateAll(['eliminado' => new Expression('now()')], ["idUsuario" => $modelo->id]);
-      foreach ($menus as $menuData) {
-        $rutaUsuario = new RutaUsuario();
-        $rutaUsuario->id = $rutaUsuario->uuid();
-        $rutaUsuario->idRuta = $menuData["idRuta"];
-        $rutaUsuario->idUsuario = $modelo->id;
-        $rutaUsuario->asignado = new Expression('now()');
-        $rutaUsuario->creado = $menuData["creado"];
-        $rutaUsuario->eliminado = null;
-        if (!$rutaUsuario->save()) {
-          $transaccion->rollBack();
-          return (new Respuesta($rutaUsuario))
-            ->esError()
-            ->mensaje("Hubo un problema al guardar rutas");
         }
       }
 

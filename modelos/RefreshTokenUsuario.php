@@ -3,7 +3,6 @@
 namespace app\modelos;
 
 use app\modelos\Usuario;
-use Yii;
 
 /**
  * This is the model class for table "RefreshTokenUsuario".

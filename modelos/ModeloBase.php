@@ -2,4 +2,5 @@
 
 namespace app\modelos;
 
-class ModeloBase extends \eDesarrollos\models\ModeloBase {}
+class ModeloBase extends \eDesarrollos\models\ModeloBase {
+}

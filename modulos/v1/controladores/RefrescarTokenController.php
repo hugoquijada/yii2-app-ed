@@ -14,7 +14,7 @@ class RefrescarTokenController extends AuthController {
     return false;
   }
 
-  public function actionGuardar() {
+  public function actionPost() {
     $req = Yii::$app->getRequest();
 
     $token = trim($req->getBodyParam("refreshToken", ""));

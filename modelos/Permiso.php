@@ -16,24 +16,20 @@ use Yii;
  * @property string|null $eliminado
  *
  * @property Modulo $modulo
- * @property ModuloPermisoUsuario[] $moduloPermisoUsuarios
  */
-class ModuloPermiso extends ModeloBase
-{
+class Permiso extends ModeloBase {
   /**
    * {@inheritdoc}
    */
 
-  public static function tableName()
-  {
-    return 'ModuloPermiso';
+  public static function tableName() {
+    return 'Permiso';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function rules()
-  {
+  public function rules() {
     return [
       [['id'], 'required'],
       [['creado', 'modificado', 'eliminado'], 'safe'],
@@ -49,8 +45,7 @@ class ModuloPermiso extends ModeloBase
   /**
    * {@inheritdoc}
    */
-  public function attributeLabels()
-  {
+  public function attributeLabels() {
     return [
       'id' => 'ID',
       'idModulo' => 'Id Modulo',
@@ -62,8 +57,7 @@ class ModuloPermiso extends ModeloBase
     ];
   }
 
-  public function fields()
-  {
+  public function fields() {
     return [
       'id',
       'idModulo',
@@ -75,8 +69,7 @@ class ModuloPermiso extends ModeloBase
     ];
   }
 
-  public function extraFields()
-  {
+  public function extraFields() {
     return [
       'modulo',
     ];
@@ -88,9 +81,7 @@ class ModuloPermiso extends ModeloBase
    *
    * @return \yii\db\ActiveQuery
    */
-  public function getModulo()
-  {
+  public function getModulo() {
     return $this->hasOne(Modulo::class, ['id' => 'idModulo']);
   }
-
 }

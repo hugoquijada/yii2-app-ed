@@ -2,11 +2,9 @@
 
 namespace app\modelos;
 
-class Sesion extends Usuario
-{
+class Sesion extends Usuario {
 
-  public function fields()
-  {
+  public function fields() {
     return [
       'id',
       'correo',

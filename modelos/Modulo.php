@@ -13,24 +13,22 @@ use Yii;
  * @property string|null $modificado
  * @property string|null $eliminado
  *
- * @property ModuloPermiso[] $permisos
+ * @property Permiso[] $permisos
  */
-class Modulo extends ModeloBase
-{
+class Modulo extends ModeloBase {
+
   /**
    * {@inheritdoc}
    */
 
-  public static function tableName()
-  {
+  public static function tableName() {
     return 'Modulo';
   }
-  
+
   /**
    * {@inheritdoc}
    */
-  public function rules()
-  {
+  public function rules() {
     return [
       [['id'], 'required'],
       [['creado', 'modificado', 'eliminado'], 'safe'],
@@ -43,8 +41,7 @@ class Modulo extends ModeloBase
   /**
    * {@inheritdoc}
    */
-  public function attributeLabels()
-  {
+  public function attributeLabels() {
     return [
       'id' => 'ID',
       'nombre' => 'Nombre',
@@ -54,8 +51,7 @@ class Modulo extends ModeloBase
     ];
   }
 
-  public function fields()
-  {
+  public function fields() {
     return [
       'id',
       'nombre',
@@ -65,8 +61,7 @@ class Modulo extends ModeloBase
     ];
   }
 
-  public function extraFields()
-  {
+  public function extraFields() {
     return [
       'permisos',
     ];
@@ -74,12 +69,11 @@ class Modulo extends ModeloBase
 
 
   /**
-   * Gets query for [[ModuloPermisos]].
+   * Gets query for [[Permisos]].
    *
    * @return \yii\db\ActiveQuery
    */
-  public function getPermisos()
-  {
-    return $this->hasMany(ModuloPermiso::class, ['idModulo' => 'id']);
+  public function getPermisos() {
+    return $this->hasMany(Permiso::class, ['idModulo' => 'id']);
   }
 }

@@ -2,7 +2,7 @@
 
 namespace app\modelos;
 
-use Ramsey\Uuid\Uuid;
+use Override;
 use Yii;
 use yii\db\Expression;
 use yii\db\Query;
@@ -26,9 +26,7 @@ use yii\db\Query;
  * @property int|null $pin
  *
  * @property Media[] $media
- * @property Menu[] $menus
  * @property Permiso[] $permisos
- * @property Ruta[] $rutas
  */
 class Usuario extends \eDesarrollos\models\Usuario {
 
@@ -93,7 +91,6 @@ class Usuario extends \eDesarrollos\models\Usuario {
     return [
       'id',
       'correo',
-      'clave',
       'nombre',
       'apellidos',
       'estatus',
@@ -104,7 +101,9 @@ class Usuario extends \eDesarrollos\models\Usuario {
       'login',
       'creado',
       'modificado',
-      'eliminado',
+      'nombreCompleto' => function ($modelo) {
+        return $modelo->nombre . " " . $modelo->apellidos;
+      }
     ];
   }
 
@@ -115,6 +114,37 @@ class Usuario extends \eDesarrollos\models\Usuario {
       'media',
       'rutas',
     ];
+  }
+
+  public static function configuracionReporte(): array {
+    return [];
+  }
+
+  public static function columnasReporte(): array {
+    $cols =  [
+      'correo',
+      'nombre',
+      'apellidos',
+      'estatus',
+      'telefono',
+      'alias',
+      'foto',
+      'rol',
+      'login',
+      'creado',
+      'modificado',
+    ];
+
+    $columnas = [];
+    foreach ($cols as $key => $value) {
+      $atributo = is_string($key) ? $key : $value;
+      if (!is_string($atributo)) {
+        continue;
+      }
+      $columnas[$atributo] = self::getAttributeLabel($atributo);
+    }
+
+    return $columnas;
   }
 
   public function addRefreshToken() {
@@ -154,8 +184,8 @@ class Usuario extends \eDesarrollos\models\Usuario {
   }
 
   public function getPermisos() {
-    return $this->hasMany(ModuloPermiso::class, ['id' => 'idPermiso'])
-      ->viaTable('ModuloPermisoUsuario', ['idUsuario' => 'id']);
+    return $this->hasMany(Permiso::class, ['id' => 'idPermiso'])
+      ->viaTable('PermisoUsuario', ['idUsuario' => 'id']);
   }
 
   public function agregarClave($pwd) {

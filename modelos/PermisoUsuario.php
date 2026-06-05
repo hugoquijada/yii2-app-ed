@@ -15,31 +15,29 @@ use Yii;
  * @property string|null $modificado
  * @property string|null $eliminado
  *
- * @property ModuloPermiso $permiso
+ * @property Permiso $permiso
  * @property Usuario $usuario
  */
-class PermisoUsuario extends ModeloBase
-{
+class PermisoUsuario extends ModeloBase {
+
   /**
    * {@inheritdoc}
    */
 
-  public static function tableName()
-  {
+  public static function tableName() {
     return 'ModuloPermisoUsuario';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function rules()
-  {
+  public function rules() {
     return [
       [['id'], 'required'],
       [['asignado', 'creado', 'modificado', 'eliminado'], 'safe'],
       [['id', 'idPermiso', 'idUsuario'], 'string', 'max' => 36],
       [['id'], 'unique'],
-      [['idPermiso'], 'exist', 'skipOnError' => true, 'targetClass' => ModuloPermiso::class, 'targetAttribute' => ['idPermiso' => 'id']],
+      [['idPermiso'], 'exist', 'skipOnError' => true, 'targetClass' => Permiso::class, 'targetAttribute' => ['idPermiso' => 'id']],
       [['idUsuario'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::class, 'targetAttribute' => ['idUsuario' => 'id']],
     ];
   }
@@ -47,8 +45,7 @@ class PermisoUsuario extends ModeloBase
   /**
    * {@inheritdoc}
    */
-  public function attributeLabels()
-  {
+  public function attributeLabels() {
     return [
       'id' => 'ID',
       'idPermiso' => 'Id Permiso',
@@ -60,8 +57,7 @@ class PermisoUsuario extends ModeloBase
     ];
   }
 
-  public function fields()
-  {
+  public function fields() {
     return [
       'id',
       'idPermiso',
@@ -73,8 +69,7 @@ class PermisoUsuario extends ModeloBase
     ];
   }
 
-  public function extraFields()
-  {
+  public function extraFields() {
     return [
       'permiso',
       'usuario',
@@ -87,9 +82,8 @@ class PermisoUsuario extends ModeloBase
    *
    * @return \yii\db\ActiveQuery
    */
-  public function getPermiso()
-  {
-    return $this->hasOne(ModuloPermiso::class, ['id' => 'idPermiso']);
+  public function getPermiso() {
+    return $this->hasOne(Permiso::class, ['id' => 'idPermiso']);
   }
 
   /**
@@ -97,8 +91,7 @@ class PermisoUsuario extends ModeloBase
    *
    * @return \yii\db\ActiveQuery
    */
-  public function getUsuario()
-  {
+  public function getUsuario() {
     return $this->hasOne(Usuario::class, ['id' => 'idUsuario']);
   }
 }

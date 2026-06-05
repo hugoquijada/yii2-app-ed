@@ -16,11 +16,11 @@ $config = [
   'aliases' => [
     '@bower' => '@vendor/yidas/yii2-bower-asset/bower',
     '@npm'   => '@vendor/npm-asset',
-    '@excel' => '@app/modulos/excel',
-    '@pdf' => '@app/modulos/pdf',
-    '@mail' => '@app/mail',
-    '@word' => '@app/modulos/word',
+    '@docs' => '@app/modulos/docs',
     '@edesarrollos' => '@app/vendor/edesarrollos/yii2-ed/src',
+    '@mail' => '@app/mail',
+    '@publico' => '@app/publico',
+    '@recursos' => '@app/publico/recursos',
   ],
   'components' => [
     'request' => [

@@ -1,11 +1,11 @@
 <?php
 
-namespace word;
+namespace p;
 
 class Modulo extends \eDesarrollos\base\Modulo {
 
   /**
    * {@inheritdoc}
    */
-  public $controllerNamespace = 'word\controllers';
+  public $controllerNamespace = 'p\controladores';
 }
