@@ -13,30 +13,10 @@ class UsuarioController extends JsonController {
 
   public $modelClass = \app\modelos\Usuario::class;
 
-  public function actionModelo() {
-    $modelo = new $this->modelClass();
-    $atributos = $modelo->attributeLabels();
-    $columnas = [];
-
-    foreach ($atributos as $key => $value) {
-      $columnas[] = [
-        'title' => $value,
-        'dataIndex' => $key,
-      ];
-    }
-
-    $defaultEndpoint = "/v1/{$this->id}";
-
-    return [
-      'nombrePlural' => $modelo::nombrePlural(),
-      'nombreSingular' => $modelo::nombreSingular(),
-      'endpoints' => [
-        'default' => $defaultEndpoint . '.json',
-      ],
-      'columnas' => $columnas,
-    ];
-  }
-
+  /**
+   * @param \yii\db\ActiveQuery $query
+   * @param \yii\web\Request $request
+   */
   public function buscador(&$query, $request) {
     $id = $request->get($this->modeloID, "");
     $buscar = trim($request->get("buscar", ""));

@@ -14,9 +14,16 @@ class IniciarSesionController extends JsonController {
     $correo = trim($req->getBodyParam("correo", ""));
     $clave = trim($req->getBodyParam("clave", ""));
 
+    if ($correo === '') {
+      $modelo = new Sesion();
+      $modelo->addError("correo", "No se encontró el Usuario.");
+      return new Respuesta($modelo);
+    }
+
     $modelo = Sesion::find()
-      ->andWhere(["correo" => $correo])
+      ->andWhere(["OR", "correo ilike :q", "alias ilike :q"])
       ->andWhere('eliminado is null')
+      ->addParams([":q" => $correo])
       ->one();
 
     /** @var \app\modelos\Sesion $modelo */

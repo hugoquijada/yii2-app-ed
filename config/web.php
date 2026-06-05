@@ -83,11 +83,10 @@ $config = [
 
   'params' => $params,
   'modules' => [
-    'v1' => ['class' => 'v1\Modulo'],
-    'pdf' => ['class' => 'pdf\Modulo'],
-    'excel' => ['class' => 'excel\Modulo'],
-    'word' => ['class' => 'word\Modulo'],
+    'docs' => ['class' => 'docs\Modulo'],
     'mail' => ['class' => 'eDesarrollos\mail\Module'],
+    'p' => ['class' => 'p\Modulo'],
+    'v1' => ['class' => 'v1\Modulo'],
   ]
 ];
 

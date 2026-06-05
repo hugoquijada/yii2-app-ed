@@ -76,7 +76,7 @@ class Usuario extends \eDesarrollos\models\Usuario {
       'nombre' => 'Nombre',
       'apellidos' => 'Apellidos',
       'estatus' => 'Estatus',
-      'telefono' => 'Telefono',
+      'telefono' => 'Teléfono',
       'alias' => 'Alias',
       'foto' => 'Foto',
       'rol' => 'Rol',
@@ -84,6 +84,7 @@ class Usuario extends \eDesarrollos\models\Usuario {
       'creado' => 'Creado',
       'modificado' => 'Modificado',
       'eliminado' => 'Eliminado',
+      'nombreCompleto' => 'Nombre Completo'
     ];
   }
 
@@ -117,34 +118,21 @@ class Usuario extends \eDesarrollos\models\Usuario {
   }
 
   public static function configuracionReporte(): array {
-    return [];
+    $config = parent::configuracionReporte(); /*
+    $config['titulo']['texto'] = 'Reporte de usuarios';
+    $config['titulo']['mostrar'] = true;
+    $config['logo']['mostrar'] = true; //  */
+    return $config;
   }
 
   public static function columnasReporte(): array {
-    $cols =  [
+    return [
       'correo',
-      'nombre',
-      'apellidos',
-      'estatus',
       'telefono',
-      'alias',
-      'foto',
-      'rol',
-      'login',
-      'creado',
-      'modificado',
-    ];
-
-    $columnas = [];
-    foreach ($cols as $key => $value) {
-      $atributo = is_string($key) ? $key : $value;
-      if (!is_string($atributo)) {
-        continue;
+      'nombreCompleto' => function ($modelo) {
+        return $modelo->nombre . " " . $modelo->apellidos;
       }
-      $columnas[$atributo] = self::getAttributeLabel($atributo);
-    }
-
-    return $columnas;
+    ];
   }
 
   public function addRefreshToken() {
