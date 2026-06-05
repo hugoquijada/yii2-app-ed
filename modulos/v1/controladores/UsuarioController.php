@@ -5,11 +5,10 @@ namespace v1\controladores;
 use app\modelos\PermisoUsuario;
 use eDesarrollos\data\Respuesta;
 use eDesarrollos\rest\AuthController;
-use eDesarrollos\rest\JsonController;
 use Yii;
 use yii\db\Expression;
 
-class UsuarioController extends JsonController {
+class UsuarioController extends AuthController {
 
   public $modelClass = \app\modelos\Usuario::class;
 
