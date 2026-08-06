@@ -14,11 +14,13 @@ class CronController extends Controller {
     $callback = require \Yii::getAlias('@app/config/crones.php');
     $callback($schedule);
 
+    $path = \Yii::getAlias('@app');
+
     foreach ($schedule->getJobs() as $job) {
       $cron = new CronExpression($job->expression);
 
       if ($cron->isDue()) {
-        exec("php yii {$job->command} > /dev/null 2>&1 &");
+        exec("php {$path}/yii {$job->command} > /dev/null 2>&1 &");
       }
     }
   }
