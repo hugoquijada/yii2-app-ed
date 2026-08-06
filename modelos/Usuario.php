@@ -111,6 +111,7 @@ class Usuario extends \eDesarrollos\models\Usuario {
   public function extraFields() {
     return [
       'permisos',
+      'moduloPermisos',
       'menus',
       'media',
       'rutas',
@@ -173,7 +174,13 @@ class Usuario extends \eDesarrollos\models\Usuario {
 
   public function getPermisos() {
     return $this->hasMany(Permiso::class, ['id' => 'idPermiso'])
-      ->viaTable('PermisoUsuario', ['idUsuario' => 'id']);
+      ->viaTable('PermisoUsuario', ['idUsuario' => 'id'], function ($query) {
+        $query->andWhere(['{{PermisoUsuario}}.[[eliminado]]' => null]);
+      });
+  }
+
+  public function getModuloPermisos() {
+    return $this->getPermisos();
   }
 
   public function agregarClave($pwd) {
