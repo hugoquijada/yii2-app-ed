@@ -8,10 +8,10 @@ use Yii;
  * Clase modelo para la tabla "Media".
  *
  * @property string $id
- * @property int|null $idUsuario
+ * @property string|null $idUsuario
  * @property string $nombre
  * @property string|null $uuid
- * @property string|null $size
+ * @property int|null $peso
  * @property string|null $extension
  * @property string|null $mimetype
  * @property string|null $ruta
@@ -34,12 +34,14 @@ class Media extends ModeloBase {
    */
   public function rules() {
     return [
+      [['idUsuario', 'uuid', 'peso', 'extension', 'mimetype', 'ruta', 'descripcion', 'creado', 'modificado', 'eliminado'], 'default', 'value' => null],
       [['id', 'nombre'], 'required'],
-      [['idUsuario'], 'default', 'value' => null],
-      [['idUsuario'], 'integer'],
+      [['peso'], 'default', 'value' => null],
+      [['peso'], 'integer'],
       [['creado', 'modificado', 'eliminado'], 'safe'],
       [['id'], 'string', 'max' => 50],
-      [['nombre', 'uuid', 'size', 'mimetype'], 'string', 'max' => 100],
+      [['idUsuario'], 'string', 'max' => 36],
+      [['nombre', 'uuid', 'mimetype'], 'string', 'max' => 100],
       [['extension'], 'string', 'max' => 5],
       [['ruta', 'descripcion'], 'string', 'max' => 500],
       [['id'], 'unique'],
@@ -55,7 +57,7 @@ class Media extends ModeloBase {
       'idUsuario' => 'Id Usuario',
       'nombre' => 'Nombre',
       'uuid' => 'Uuid',
-      'size' => 'Size',
+      'peso' => 'Peso',
       'extension' => 'Extension',
       'mimetype' => 'Mimetype',
       'ruta' => 'Ruta',
@@ -72,7 +74,7 @@ class Media extends ModeloBase {
       'idUsuario',
       'nombre',
       'uuid',
-      'size',
+      'peso',
       'extension',
       'mimetype',
       'ruta',

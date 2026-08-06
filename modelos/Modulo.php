@@ -74,6 +74,6 @@ class Modulo extends ModeloBase {
    * @return \yii\db\ActiveQuery
    */
   public function getPermisos() {
-    return $this->hasMany(Permiso::class, ['idModulo' => 'id']);
+    return $this->hasMany(Permiso::class, ['idModulo' => 'id'])->where(["eliminado" => null]);
   }
 }
