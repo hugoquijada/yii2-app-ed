@@ -25,7 +25,7 @@ class PermisoUsuario extends ModeloBase {
    */
 
   public static function tableName() {
-    return 'ModuloPermisoUsuario';
+    return 'PermisoUsuario';
   }
 
   /**

@@ -5,11 +5,10 @@ namespace v1\controladores;
 use app\modelos\PermisoUsuario;
 use eDesarrollos\data\Respuesta;
 use eDesarrollos\rest\AuthController;
-use eDesarrollos\rest\JsonController;
 use Yii;
 use yii\db\Expression;
 
-class UsuarioController extends JsonController {
+class UsuarioController extends AuthController {
 
   public $modelClass = \app\modelos\Usuario::class;
 
@@ -47,7 +46,7 @@ class UsuarioController extends JsonController {
     $pwd = trim($this->req->getBodyParam("pwd", ""));
     $clave = '';
 
-    $permisos = $this->req->getBodyParam("permisos", []);
+    $permisos = $this->req->getBodyParam("moduloPermisos", []);
 
     if ($id !== "") {
       $modelo = $this->modelClass::findOne($id);
@@ -86,7 +85,7 @@ class UsuarioController extends JsonController {
         $permiso->idUsuario = $modelo->id;
         $permiso->idPermiso = $permisoData["id"];
         $permiso->asignado = new Expression('now()');
-        $permiso->creado = $permisoData["creado"];
+        $permiso->creado = new Expression('now()');
         $permiso->eliminado = null;
 
         if (!$permiso->save()) {
