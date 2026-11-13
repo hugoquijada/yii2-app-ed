@@ -23,12 +23,16 @@ class ConfiguracionController extends AuthController {
     }
 
     $modelo->load($this->req->getBodyParams(), '');
+    $modelo->idUsuario = $this->usuario->id;
     if (!$modelo->save()) {
       return (new Respuesta($modelo))
         ->mensaje("Hubo un problema al guardar la {$this->nombreSingular}");
     }
 
     $modelo->refresh();
+    if ($modelo->clave === Configuracion::CLAVE_ZONA_HORARIA) {
+      \Yii::$app->timeZone = $modelo->valor;
+    }
     return (new Respuesta($modelo))
       ->mensaje("{$this->nombreSingular} guardada");
   }
@@ -36,14 +40,9 @@ class ConfiguracionController extends AuthController {
   public function buscador(&$query, $request) {
     $id = $request->get("clave", "");
     $buscar = $request->get("buscar", "");
-    $idUsuario = $request->get("idUsuario", "");
 
     if ($id !== "") {
       $query->andWhere(["clave" => $id]);
-    }
-
-    if ($idUsuario !== "") {
-      $query->andWhere(["idUsuario" => $idUsuario]);
     }
 
     if ($buscar !== "") {

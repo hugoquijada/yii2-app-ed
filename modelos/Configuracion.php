@@ -20,6 +20,18 @@ use Yii;
 */
 class Configuracion extends ModeloBase {
 
+  public const CLAVE_FORMATO_FLEXIBLE = 'FEX';
+  public const CLAVE_TITULO_SISTEMA = 'TITULO';
+  public const CLAVE_ZONA_HORARIA = 'ZH';
+  public const CLAVE_LOGO = 'LOGO';
+
+  public const CLAVES_SISTEMA = [
+    self::CLAVE_FORMATO_FLEXIBLE,
+    self::CLAVE_TITULO_SISTEMA,
+    self::CLAVE_ZONA_HORARIA,
+    self::CLAVE_LOGO,
+  ];
+
   /**
   * {@inheritdoc}
   */
@@ -40,8 +52,20 @@ class Configuracion extends ModeloBase {
       [['clave'], 'string', 'max' => 50],
       [['nombre'], 'string', 'max' => 255],
       [['clave'], 'unique'],
+      ['valor', 'validarZonaHoraria'],
       [['idUsuario'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::class, 'targetAttribute' => ['idUsuario' => 'id']],
     ];
+  }
+
+  public function validarZonaHoraria($attribute): void {
+    if ($this->clave !== self::CLAVE_ZONA_HORARIA || $this->$attribute === null) {
+      return;
+    }
+
+    $zonasHorarias = \DateTimeZone::listIdentifiers(\DateTimeZone::AMERICA);
+    if (!in_array($this->$attribute, $zonasHorarias, true)) {
+      $this->addError($attribute, 'La zona horaria debe pertenecer a América.');
+    }
   }
 
   /**

@@ -5,10 +5,12 @@ namespace v1\controladores;
 use app\modelos\RefreshTokenUsuario;
 use app\modelos\Sesion;
 use eDesarrollos\data\Respuesta;
-use eDesarrollos\rest\AuthController;
+use eDesarrollos\rest\JsonController;
 use Yii;
 
-class RefrescarTokenController extends AuthController {
+class RefrescarTokenController extends JsonController {
+
+  public $accionesPermitidas = ["post"];
 
   public static function mostrarEnOpenapi(): bool {
     return false;
@@ -18,17 +20,19 @@ class RefrescarTokenController extends AuthController {
     $req = Yii::$app->getRequest();
 
     $token = trim($req->getBodyParam("refreshToken", ""));
-    return new Respuesta($token);
 
     $refreshToken = RefreshTokenUsuario::find()
       ->andWhere(["token" => $token])
       ->andWhere(["expiracion" => ">=", date("Y-m-d H:i:s")])
+      ->andWhere(["eliminado" => null])
       ->one();
 
     if ($refreshToken === null) {
-      return (new Respuesta($refreshToken))
-        ->esError()
-        ->mensaje("Refresh token Inválido");
+      $respuesta = (new Respuesta())
+        ->esError(401)
+        ->mensaje("Refresh token inválido");
+      $respuesta->errores = ["refreshToken" => "El refresh token no es válido o expiró."];
+      return $respuesta;
     }
 
     $modelo = Sesion::find()
@@ -43,6 +47,8 @@ class RefrescarTokenController extends AuthController {
       return new Respuesta($modelo);
     }
 
+
+    $modelo->removeRefreshToken($token);
 
     return new Respuesta($modelo);
   }

@@ -71,6 +71,7 @@ Formatos soportados:
 - `xlsx`
 - `pdf`
 - `docx`
+- `blob` para respuestas binarias o archivos enviados directamente por la acción
 
 ## Convencion REST
 
@@ -94,7 +95,13 @@ Ejemplos:
 /v1/usuario.xlsx
 /v1/usuario.pdf
 /v1/usuario.docx
+/v1/archivo.blob
 ```
+
+La extensión solicitada es obligatoria: una acción que intente devolver un
+archivo para una ruta `.json`, por ejemplo, recibe un error HTTP 406. Usa
+`.blob` para una descarga binaria cuyo tipo MIME no corresponde a los formatos
+documentales soportados.
 
 Para exportar todos los registros en formatos documentales, puedes usar:
 

@@ -4,7 +4,7 @@ return [
   'title' => 'API YII2',
   'version' => '1.0.0',
   'description' => 'Descripción de la Documentación.',
-  'formats' => ['json', 'xml', 'html', 'pdf', 'xlsx', 'csv', 'docx'],
+  'formats' => ['json', 'xml', 'html', 'pdf', 'xlsx', 'csv', 'docx', 'blob'],
   'servers' => [
     [
       'url' => 'http://localhost:8080',

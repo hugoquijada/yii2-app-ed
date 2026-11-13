@@ -27,11 +27,14 @@ use yii\db\Query;
  *
  * @property Media[] $media
  * @property Permiso[] $permisos
+ * @property Grupo[] $grupos
  */
 class Usuario extends \eDesarrollos\models\Usuario {
 
   public const ACTIVO = 1;
   public const INACTIVO = 0;
+
+  private $_permisos;
 
   /**
    * {@inheritdoc}
@@ -89,6 +92,16 @@ class Usuario extends \eDesarrollos\models\Usuario {
   }
 
   public function fields() {
+    if ($this->getScenario() === self::SCENARIO_REPORTE) {
+      return [
+        'correo',
+        'telefono',
+        'nombreCompleto' => function ($modelo) {
+          return $modelo->nombre . " " . $modelo->apellidos;
+        }
+      ];
+    }
+
     return [
       'id',
       'correo',
@@ -112,6 +125,8 @@ class Usuario extends \eDesarrollos\models\Usuario {
     return [
       'permisos',
       'moduloPermisos',
+      'grupos',
+      'permisosEfectivos',
       'menus',
       'media',
       'rutas',
@@ -124,16 +139,6 @@ class Usuario extends \eDesarrollos\models\Usuario {
     $config['titulo']['mostrar'] = true;
     $config['logo']['mostrar'] = true; //  */
     return $config;
-  }
-
-  public static function columnasReporte(): array {
-    return [
-      'correo',
-      'telefono',
-      'nombreCompleto' => function ($modelo) {
-        return $modelo->nombre . " " . $modelo->apellidos;
-      }
-    ];
   }
 
   public function addRefreshToken() {
@@ -181,6 +186,25 @@ class Usuario extends \eDesarrollos\models\Usuario {
 
   public function getModuloPermisos() {
     return $this->getPermisos();
+  }
+
+  public function getGrupos() {
+    return $this->hasMany(Grupo::class, ['id' => 'idGrupo'])
+      ->viaTable('GrupoUsuario', ['idUsuario' => 'id'], function ($query) {
+        $query->andWhere(['{{GrupoUsuario}}.[[eliminado]]' => null]);
+      });
+  }
+
+  public function getPermisosEfectivos() {
+    $ids = array_keys(array_filter($this->cargarPermisos()));
+    if (empty($ids)) {
+      return [];
+    }
+
+    return Permiso::find()
+      ->andWhere(['id' => $ids])
+      ->andWhere(['eliminado' => null])
+      ->all();
   }
 
   public function agregarClave($pwd) {
@@ -233,28 +257,38 @@ class Usuario extends \eDesarrollos\models\Usuario {
     if ($permisosVacios || !empty($noEstan)) {
       $permisosQuery = (new Query())
         ->select([
-          'case when ({{PermisoUsuario}}.[[idUsuario]] is not null) then true else false end as [[idUsuario]]',
+          'bool_or({{PermisoUsuario}}.[[idUsuario]] is not null or {{GrupoUsuario}}.[[idGrupo]] is not null) as [[permitido]]',
           '{{Permiso}}.id',
         ])
         ->from('Permiso')
         ->leftJoin(
           'PermisoUsuario',
-          '{{PermisoUsuario}}.[[idPermiso]] = {{Permiso}}.id and {{PermisoUsuario}}.[[idUsuario]] = :idUsuario',
+          '{{PermisoUsuario}}.[[idPermiso]] = {{Permiso}}.id and {{PermisoUsuario}}.[[idUsuario]] = :idUsuario and {{PermisoUsuario}}.[[eliminado]] is null',
           [':idUsuario' => $this->id]
         )
-        ->andWhere([
-          // 'idPermiso' => $permiso,
-          '{{PermisoUsuario}}.eliminado' => null
-        ]);
+        ->leftJoin(
+          'PermisoGrupo',
+          '{{PermisoGrupo}}.[[idPermiso]] = {{Permiso}}.id and {{PermisoGrupo}}.[[eliminado]] is null'
+        )
+        ->leftJoin(
+          'GrupoUsuario',
+          '{{GrupoUsuario}}.[[idGrupo]] = {{PermisoGrupo}}.[[idGrupo]] and {{GrupoUsuario}}.[[idUsuario]] = :idUsuario and {{GrupoUsuario}}.[[eliminado]] is null',
+          [':idUsuario' => $this->id]
+        )
+        ->andWhere(['{{Permiso}}.[[eliminado]]' => null])
+        ->groupBy('{{Permiso}}.[[id]]');
 
-      if ($permisosVacios) {
+      if ($permisosVacios && $permiso !== null) {
         $permisosQuery->andWhere(['{{Permiso}}.id' => $permiso]);
-      } else {
+      } elseif (!$permisosVacios) {
         $permisosQuery->andWhere(['{{Permiso}}.id' => $noEstan]);
       }
 
       $aux = $permisosQuery->indexBy('id')
         ->column();
+      foreach ($aux as $idPermiso => $permitido) {
+        $aux[$idPermiso] = in_array($permitido, [true, 1, '1', 't', 'true'], true);
+      }
 
       if ($permisosVacios) {
         $this->_permisos = $aux;

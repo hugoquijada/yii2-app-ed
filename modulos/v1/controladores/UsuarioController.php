@@ -3,6 +3,7 @@
 namespace v1\controladores;
 
 use app\modelos\PermisoUsuario;
+use app\modelos\GrupoUsuario;
 use eDesarrollos\data\Respuesta;
 use eDesarrollos\rest\AuthController;
 use Yii;
@@ -47,6 +48,7 @@ class UsuarioController extends AuthController {
     $clave = '';
 
     $permisos = $this->req->getBodyParam("moduloPermisos", []);
+    $grupos = $this->req->getBodyParam("grupos", []);
 
     if ($id !== "") {
       $modelo = $this->modelClass::findOne($id);
@@ -96,8 +98,32 @@ class UsuarioController extends AuthController {
         }
       }
 
+      GrupoUsuario::updateAll(['eliminado' => new Expression('now()')], ["idUsuario" => $modelo->id]);
+      $idsGrupos = [];
+      foreach ($grupos as $grupoData) {
+        $idGrupo = is_array($grupoData) ? ($grupoData['id'] ?? '') : $grupoData;
+        if ($idGrupo !== '') {
+          $idsGrupos[] = $idGrupo;
+        }
+      }
+
+      foreach (array_unique($idsGrupos) as $idGrupo) {
+        $grupoUsuario = new GrupoUsuario();
+        $grupoUsuario->id = $grupoUsuario->uuid();
+        $grupoUsuario->idUsuario = $modelo->id;
+        $grupoUsuario->idGrupo = $idGrupo;
+        $grupoUsuario->asignado = new Expression('now()');
+        $grupoUsuario->creado = new Expression('now()');
+        if (!$grupoUsuario->save()) {
+          $transaccion->rollBack();
+          return (new Respuesta($grupoUsuario))
+            ->esError()
+            ->mensaje("Hubo un problema al guardar grupos");
+        }
+      }
+
       $transaccion->commit();
-    } catch (\Exception $e) {
+    } catch (\Throwable $e) {
       $transaccion->rollBack();
       return (new Respuesta($e))
         ->esError()

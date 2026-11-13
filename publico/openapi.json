@@ -1,0 +1,1922 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "API YII2",
+        "version": "1.0.0",
+        "description": "Descripción de la Documentación."
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080",
+            "description": "Servidor local"
+        }
+    ],
+    "tags": [
+        {
+            "name": "/v1/iniciar-sesion.json",
+            "description": "IniciarSesion"
+        },
+        {
+            "name": "/v1/media.json",
+            "description": "Media"
+        },
+        {
+            "name": "/v1/modulo.json",
+            "description": "Modulo"
+        },
+        {
+            "name": "/v1/permiso.json",
+            "description": "Permiso"
+        },
+        {
+            "name": "/v1/usuario.json",
+            "description": "Usuario"
+        },
+        {
+            "name": "/p/default.json",
+            "description": "Default"
+        }
+    ],
+    "paths": {
+        "/p/default.{format}": {
+            "get": {
+                "tags": [
+                    "/p/default.json"
+                ],
+                "summary": "Consulta registros",
+                "parameters": [
+                    {
+                        "name": "format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json",
+                                "xml",
+                                "html",
+                                "pdf",
+                                "xlsx",
+                                "csv",
+                                "docx"
+                            ]
+                        },
+                        "description": "Formato de respuesta"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "resultado": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        },
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "paginacion": {
+                                            "type": "object",
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer"
+                                                },
+                                                "pagina": {
+                                                    "type": "integer"
+                                                },
+                                                "limite": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "required": [
+                                                "total",
+                                                "pagina",
+                                                "limite"
+                                            ],
+                                            "additionalProperties": false
+                                        }
+                                    },
+                                    "required": [
+                                        "resultado",
+                                        "paginacion"
+                                    ],
+                                    "additionalProperties": false
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            }
+        },
+        "/v1/iniciar-sesion.{format}": {
+            "post": {
+                "tags": [
+                    "/v1/iniciar-sesion.json"
+                ],
+                "summary": "Guarda registro",
+                "parameters": [
+                    {
+                        "name": "format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json",
+                                "xml",
+                                "html",
+                                "pdf",
+                                "xlsx",
+                                "csv",
+                                "docx"
+                            ]
+                        },
+                        "description": "Formato de respuesta"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        },
+                                        "detalle": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validacion al guardar el registro",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mensaje": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "errores",
+                                        "mensaje"
+                                    ],
+                                    "additionalProperties": false
+                                },
+                                "example": {
+                                    "errores": {
+                                        "nombre_campo": "El campo nombre_campo no puede estar vacío",
+                                        "otra_columna": "El campo otra_columna tiene otro error"
+                                    },
+                                    "mensaje": "Ocurrió un problema al guardar el registro, por favor contacta a soporte técnico"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            },
+            "put": {
+                "tags": [
+                    "/v1/iniciar-sesion.json"
+                ],
+                "summary": "Actualiza registro",
+                "parameters": [
+                    {
+                        "name": "format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json",
+                                "xml",
+                                "html",
+                                "pdf",
+                                "xlsx",
+                                "csv",
+                                "docx"
+                            ]
+                        },
+                        "description": "Formato de respuesta"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        },
+                                        "detalle": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validacion al guardar el registro",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mensaje": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "errores",
+                                        "mensaje"
+                                    ],
+                                    "additionalProperties": false
+                                },
+                                "example": {
+                                    "errores": {
+                                        "nombre_campo": "El campo nombre_campo no puede estar vacío",
+                                        "otra_columna": "El campo otra_columna tiene otro error"
+                                    },
+                                    "mensaje": "Ocurrió un problema al guardar el registro, por favor contacta a soporte técnico"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            }
+        },
+        "/v1/media.{format}": {
+            "get": {
+                "tags": [
+                    "/v1/media.json"
+                ],
+                "summary": "Lista Media",
+                "parameters": [
+                    {
+                        "name": "format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json",
+                                "xml",
+                                "html",
+                                "pdf",
+                                "xlsx",
+                                "csv",
+                                "docx"
+                            ]
+                        },
+                        "description": "Formato de respuesta"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "resultado": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Media"
+                                            }
+                                        },
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "paginacion": {
+                                            "type": "object",
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer"
+                                                },
+                                                "pagina": {
+                                                    "type": "integer"
+                                                },
+                                                "limite": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "required": [
+                                                "total",
+                                                "pagina",
+                                                "limite"
+                                            ],
+                                            "additionalProperties": false
+                                        }
+                                    },
+                                    "required": [
+                                        "resultado",
+                                        "paginacion"
+                                    ],
+                                    "additionalProperties": false
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            },
+            "post": {
+                "tags": [
+                    "/v1/media.json"
+                ],
+                "summary": "Guarda registro de Media",
+                "parameters": [
+                    {
+                        "name": "format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json",
+                                "xml",
+                                "html",
+                                "pdf",
+                                "xlsx",
+                                "csv",
+                                "docx"
+                            ]
+                        },
+                        "description": "Formato de respuesta"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Media"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        },
+                                        "detalle": {
+                                            "$ref": "#/components/schemas/Media"
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validacion al guardar el registro",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mensaje": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "errores",
+                                        "mensaje"
+                                    ],
+                                    "additionalProperties": false
+                                },
+                                "example": {
+                                    "errores": {
+                                        "nombre_campo": "El campo nombre_campo no puede estar vacío",
+                                        "otra_columna": "El campo otra_columna tiene otro error"
+                                    },
+                                    "mensaje": "Ocurrió un problema al guardar el registro, por favor contacta a soporte técnico"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            },
+            "put": {
+                "tags": [
+                    "/v1/media.json"
+                ],
+                "summary": "Actualiza registro de Media",
+                "parameters": [
+                    {
+                        "name": "format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json",
+                                "xml",
+                                "html",
+                                "pdf",
+                                "xlsx",
+                                "csv",
+                                "docx"
+                            ]
+                        },
+                        "description": "Formato de respuesta"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Media"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        },
+                                        "detalle": {
+                                            "$ref": "#/components/schemas/Media"
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validacion al guardar el registro",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mensaje": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "errores",
+                                        "mensaje"
+                                    ],
+                                    "additionalProperties": false
+                                },
+                                "example": {
+                                    "errores": {
+                                        "nombre_campo": "El campo nombre_campo no puede estar vacío",
+                                        "otra_columna": "El campo otra_columna tiene otro error"
+                                    },
+                                    "mensaje": "Ocurrió un problema al guardar el registro, por favor contacta a soporte técnico"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            },
+            "delete": {
+                "tags": [
+                    "/v1/media.json"
+                ],
+                "summary": "Elimina Media",
+                "parameters": [
+                    {
+                        "name": "format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json",
+                                "xml",
+                                "html",
+                                "pdf",
+                                "xlsx",
+                                "csv",
+                                "docx"
+                            ]
+                        },
+                        "description": "Formato de respuesta"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        },
+                                        "detalle": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            }
+        },
+        "/v1/modulo.{format}": {
+            "get": {
+                "tags": [
+                    "/v1/modulo.json"
+                ],
+                "summary": "Lista Modulo",
+                "parameters": [
+                    {
+                        "name": "format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json",
+                                "xml",
+                                "html",
+                                "pdf",
+                                "xlsx",
+                                "csv",
+                                "docx"
+                            ]
+                        },
+                        "description": "Formato de respuesta"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "resultado": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Modulo"
+                                            }
+                                        },
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "paginacion": {
+                                            "type": "object",
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer"
+                                                },
+                                                "pagina": {
+                                                    "type": "integer"
+                                                },
+                                                "limite": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "required": [
+                                                "total",
+                                                "pagina",
+                                                "limite"
+                                            ],
+                                            "additionalProperties": false
+                                        }
+                                    },
+                                    "required": [
+                                        "resultado",
+                                        "paginacion"
+                                    ],
+                                    "additionalProperties": false
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "/v1/modulo.json"
+                ],
+                "summary": "Guarda registro de Modulo",
+                "parameters": [
+                    {
+                        "name": "format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json",
+                                "xml",
+                                "html",
+                                "pdf",
+                                "xlsx",
+                                "csv",
+                                "docx"
+                            ]
+                        },
+                        "description": "Formato de respuesta"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Modulo"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        },
+                                        "detalle": {
+                                            "$ref": "#/components/schemas/Modulo"
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validacion al guardar el registro",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mensaje": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "errores",
+                                        "mensaje"
+                                    ],
+                                    "additionalProperties": false
+                                },
+                                "example": {
+                                    "errores": {
+                                        "nombre_campo": "El campo nombre_campo no puede estar vacío",
+                                        "otra_columna": "El campo otra_columna tiene otro error"
+                                    },
+                                    "mensaje": "Ocurrió un problema al guardar el registro, por favor contacta a soporte técnico"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "/v1/modulo.json"
+                ],
+                "summary": "Actualiza registro de Modulo",
+                "parameters": [
+                    {
+                        "name": "format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json",
+                                "xml",
+                                "html",
+                                "pdf",
+                                "xlsx",
+                                "csv",
+                                "docx"
+                            ]
+                        },
+                        "description": "Formato de respuesta"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Modulo"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        },
+                                        "detalle": {
+                                            "$ref": "#/components/schemas/Modulo"
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validacion al guardar el registro",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mensaje": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "errores",
+                                        "mensaje"
+                                    ],
+                                    "additionalProperties": false
+                                },
+                                "example": {
+                                    "errores": {
+                                        "nombre_campo": "El campo nombre_campo no puede estar vacío",
+                                        "otra_columna": "El campo otra_columna tiene otro error"
+                                    },
+                                    "mensaje": "Ocurrió un problema al guardar el registro, por favor contacta a soporte técnico"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "/v1/modulo.json"
+                ],
+                "summary": "Elimina Modulo",
+                "parameters": [
+                    {
+                        "name": "format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json",
+                                "xml",
+                                "html",
+                                "pdf",
+                                "xlsx",
+                                "csv",
+                                "docx"
+                            ]
+                        },
+                        "description": "Formato de respuesta"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        },
+                                        "detalle": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/v1/modulo/selector.{format}": {
+            "get": {
+                "tags": [
+                    "/v1/modulo.json"
+                ],
+                "summary": "Selector",
+                "parameters": [
+                    {
+                        "name": "format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json",
+                                "xml",
+                                "html",
+                                "pdf",
+                                "xlsx",
+                                "csv",
+                                "docx"
+                            ]
+                        },
+                        "description": "Formato de respuesta"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        },
+                                        "detalle": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/v1/permiso.{format}": {
+            "get": {
+                "tags": [
+                    "/v1/permiso.json"
+                ],
+                "summary": "Lista Permiso",
+                "parameters": [
+                    {
+                        "name": "format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json",
+                                "xml",
+                                "html",
+                                "pdf",
+                                "xlsx",
+                                "csv",
+                                "docx"
+                            ]
+                        },
+                        "description": "Formato de respuesta"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "resultado": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Permiso"
+                                            }
+                                        },
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "paginacion": {
+                                            "type": "object",
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer"
+                                                },
+                                                "pagina": {
+                                                    "type": "integer"
+                                                },
+                                                "limite": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "required": [
+                                                "total",
+                                                "pagina",
+                                                "limite"
+                                            ],
+                                            "additionalProperties": false
+                                        }
+                                    },
+                                    "required": [
+                                        "resultado",
+                                        "paginacion"
+                                    ],
+                                    "additionalProperties": false
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "/v1/permiso.json"
+                ],
+                "summary": "Guarda registro de Permiso",
+                "parameters": [
+                    {
+                        "name": "format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json",
+                                "xml",
+                                "html",
+                                "pdf",
+                                "xlsx",
+                                "csv",
+                                "docx"
+                            ]
+                        },
+                        "description": "Formato de respuesta"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Permiso"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        },
+                                        "detalle": {
+                                            "$ref": "#/components/schemas/Permiso"
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validacion al guardar el registro",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mensaje": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "errores",
+                                        "mensaje"
+                                    ],
+                                    "additionalProperties": false
+                                },
+                                "example": {
+                                    "errores": {
+                                        "nombre_campo": "El campo nombre_campo no puede estar vacío",
+                                        "otra_columna": "El campo otra_columna tiene otro error"
+                                    },
+                                    "mensaje": "Ocurrió un problema al guardar el registro, por favor contacta a soporte técnico"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "/v1/permiso.json"
+                ],
+                "summary": "Actualiza registro de Permiso",
+                "parameters": [
+                    {
+                        "name": "format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json",
+                                "xml",
+                                "html",
+                                "pdf",
+                                "xlsx",
+                                "csv",
+                                "docx"
+                            ]
+                        },
+                        "description": "Formato de respuesta"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Permiso"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        },
+                                        "detalle": {
+                                            "$ref": "#/components/schemas/Permiso"
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validacion al guardar el registro",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mensaje": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "errores",
+                                        "mensaje"
+                                    ],
+                                    "additionalProperties": false
+                                },
+                                "example": {
+                                    "errores": {
+                                        "nombre_campo": "El campo nombre_campo no puede estar vacío",
+                                        "otra_columna": "El campo otra_columna tiene otro error"
+                                    },
+                                    "mensaje": "Ocurrió un problema al guardar el registro, por favor contacta a soporte técnico"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "/v1/permiso.json"
+                ],
+                "summary": "Elimina Permiso",
+                "parameters": [
+                    {
+                        "name": "format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json",
+                                "xml",
+                                "html",
+                                "pdf",
+                                "xlsx",
+                                "csv",
+                                "docx"
+                            ]
+                        },
+                        "description": "Formato de respuesta"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        },
+                                        "detalle": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/v1/usuario.{format}": {
+            "get": {
+                "tags": [
+                    "/v1/usuario.json"
+                ],
+                "summary": "Lista Usuario",
+                "parameters": [
+                    {
+                        "name": "format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json",
+                                "xml",
+                                "html",
+                                "pdf",
+                                "xlsx",
+                                "csv",
+                                "docx"
+                            ]
+                        },
+                        "description": "Formato de respuesta"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "resultado": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Usuario"
+                                            }
+                                        },
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "paginacion": {
+                                            "type": "object",
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer"
+                                                },
+                                                "pagina": {
+                                                    "type": "integer"
+                                                },
+                                                "limite": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "required": [
+                                                "total",
+                                                "pagina",
+                                                "limite"
+                                            ],
+                                            "additionalProperties": false
+                                        }
+                                    },
+                                    "required": [
+                                        "resultado",
+                                        "paginacion"
+                                    ],
+                                    "additionalProperties": false
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            },
+            "post": {
+                "tags": [
+                    "/v1/usuario.json"
+                ],
+                "summary": "Guarda registro de Usuario",
+                "parameters": [
+                    {
+                        "name": "format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json",
+                                "xml",
+                                "html",
+                                "pdf",
+                                "xlsx",
+                                "csv",
+                                "docx"
+                            ]
+                        },
+                        "description": "Formato de respuesta"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Usuario"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        },
+                                        "detalle": {
+                                            "$ref": "#/components/schemas/Usuario"
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validacion al guardar el registro",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mensaje": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "errores",
+                                        "mensaje"
+                                    ],
+                                    "additionalProperties": false
+                                },
+                                "example": {
+                                    "errores": {
+                                        "nombre_campo": "El campo nombre_campo no puede estar vacío",
+                                        "otra_columna": "El campo otra_columna tiene otro error"
+                                    },
+                                    "mensaje": "Ocurrió un problema al guardar el registro, por favor contacta a soporte técnico"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            },
+            "put": {
+                "tags": [
+                    "/v1/usuario.json"
+                ],
+                "summary": "Actualiza registro de Usuario",
+                "parameters": [
+                    {
+                        "name": "format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json",
+                                "xml",
+                                "html",
+                                "pdf",
+                                "xlsx",
+                                "csv",
+                                "docx"
+                            ]
+                        },
+                        "description": "Formato de respuesta"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Usuario"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        },
+                                        "detalle": {
+                                            "$ref": "#/components/schemas/Usuario"
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validacion al guardar el registro",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mensaje": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "errores",
+                                        "mensaje"
+                                    ],
+                                    "additionalProperties": false
+                                },
+                                "example": {
+                                    "errores": {
+                                        "nombre_campo": "El campo nombre_campo no puede estar vacío",
+                                        "otra_columna": "El campo otra_columna tiene otro error"
+                                    },
+                                    "mensaje": "Ocurrió un problema al guardar el registro, por favor contacta a soporte técnico"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            },
+            "delete": {
+                "tags": [
+                    "/v1/usuario.json"
+                ],
+                "summary": "Elimina Usuario",
+                "parameters": [
+                    {
+                        "name": "format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json",
+                                "xml",
+                                "html",
+                                "pdf",
+                                "xlsx",
+                                "csv",
+                                "docx"
+                            ]
+                        },
+                        "description": "Formato de respuesta"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        },
+                                        "detalle": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "schemas": {
+            "Media": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "ID",
+                        "maxLength": 50
+                    },
+                    "idUsuario": {
+                        "type": "integer",
+                        "description": "Id Usuario"
+                    },
+                    "nombre": {
+                        "type": "string",
+                        "description": "Nombre",
+                        "maxLength": 100
+                    },
+                    "uuid": {
+                        "type": "string",
+                        "description": "Uuid",
+                        "maxLength": 100
+                    },
+                    "size": {
+                        "type": "string",
+                        "description": "Size",
+                        "maxLength": 100
+                    },
+                    "extension": {
+                        "type": "string",
+                        "description": "Extension",
+                        "maxLength": 5
+                    },
+                    "mimetype": {
+                        "type": "string",
+                        "description": "Mimetype",
+                        "maxLength": 100
+                    },
+                    "ruta": {
+                        "type": "string",
+                        "description": "Ruta",
+                        "maxLength": 500
+                    },
+                    "descripcion": {
+                        "type": "string",
+                        "description": "Descripcion",
+                        "maxLength": 500
+                    },
+                    "creado": {
+                        "type": "string",
+                        "description": "Creado",
+                        "format": "date-time"
+                    },
+                    "modificado": {
+                        "type": "string",
+                        "description": "Modificado",
+                        "format": "date-time"
+                    },
+                    "eliminado": {
+                        "type": "string",
+                        "description": "Eliminado",
+                        "format": "date-time"
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id",
+                    "nombre"
+                ],
+                "description": "Clase modelo para la tabla \"Media\"."
+            },
+            "Modulo": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "ID",
+                        "maxLength": 50
+                    },
+                    "nombre": {
+                        "type": "string",
+                        "description": "Nombre",
+                        "maxLength": 200
+                    },
+                    "creado": {
+                        "type": "string",
+                        "description": "Creado",
+                        "format": "date-time"
+                    },
+                    "modificado": {
+                        "type": "string",
+                        "description": "Modificado",
+                        "format": "date-time"
+                    },
+                    "eliminado": {
+                        "type": "string",
+                        "description": "Eliminado",
+                        "format": "date-time"
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "description": "This is the model class for table \"Modulo\"."
+            },
+            "Permiso": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "ID",
+                        "maxLength": 36
+                    },
+                    "idModulo": {
+                        "type": "string",
+                        "description": "Id Modulo",
+                        "maxLength": 50
+                    },
+                    "nombre": {
+                        "type": "string",
+                        "description": "Nombre",
+                        "maxLength": 200
+                    },
+                    "descripcion": {
+                        "type": "string",
+                        "description": "Descripcion",
+                        "maxLength": 500
+                    },
+                    "creado": {
+                        "type": "string",
+                        "description": "Creado",
+                        "format": "date-time"
+                    },
+                    "modificado": {
+                        "type": "string",
+                        "description": "Modificado",
+                        "format": "date-time"
+                    },
+                    "eliminado": {
+                        "type": "string",
+                        "description": "Eliminado",
+                        "format": "date-time"
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "description": "This is the model class for table \"ModuloPermiso\"."
+            },
+            "Usuario": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "ID",
+                        "maxLength": 50
+                    },
+                    "correo": {
+                        "type": "string",
+                        "description": "Correo",
+                        "maxLength": 128
+                    },
+                    "nombre": {
+                        "type": "string",
+                        "description": "Nombre",
+                        "maxLength": 100
+                    },
+                    "apellidos": {
+                        "type": "string",
+                        "description": "Apellidos",
+                        "maxLength": 100
+                    },
+                    "estatus": {
+                        "type": "integer",
+                        "description": "Estatus"
+                    },
+                    "telefono": {
+                        "type": "string",
+                        "description": "Teléfono",
+                        "maxLength": 100
+                    },
+                    "alias": {
+                        "type": "string",
+                        "description": "Alias",
+                        "maxLength": 100
+                    },
+                    "foto": {
+                        "type": "string",
+                        "description": "Foto",
+                        "maxLength": 300
+                    },
+                    "rol": {
+                        "type": "string",
+                        "description": "Rol",
+                        "maxLength": 100
+                    },
+                    "login": {
+                        "type": "string",
+                        "description": "Login",
+                        "maxLength": 100
+                    },
+                    "creado": {
+                        "type": "string",
+                        "description": "Creado",
+                        "format": "date-time"
+                    },
+                    "modificado": {
+                        "type": "string",
+                        "description": "Modificado",
+                        "format": "date-time"
+                    },
+                    "nombreCompleto": {
+                        "type": "string",
+                        "description": "Nombre Completo"
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id",
+                    "correo",
+                    "nombre",
+                    "apellidos",
+                    "rol"
+                ],
+                "description": "This is the model class for table \"Usuario\"."
+            }
+        }
+    }
+}

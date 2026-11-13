@@ -17,6 +17,12 @@ use Yii;
  */
 class Modulo extends ModeloBase {
 
+  public const MENU = 'MENU';
+  public const USUARIO = 'USUARIO';
+  public const PERMISO = 'PERMISO';
+  public const GRUPO = 'GRUPO';
+  public const CONFIGURACION = 'CONFIGURACION';
+
   /**
    * {@inheritdoc}
    */

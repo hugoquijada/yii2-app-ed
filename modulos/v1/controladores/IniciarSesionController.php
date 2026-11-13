@@ -9,6 +9,8 @@ use Yii;
 
 class IniciarSesionController extends JsonController {
 
+  public $accionesPermitidas = ["post"];
+
   public function actionPost() {
     $req = Yii::$app->getRequest();
     $correo = trim($req->getBodyParam("correo", ""));

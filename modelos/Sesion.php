@@ -13,6 +13,10 @@ class Sesion extends Usuario {
       'estatus',
       'foto',
       'rol',
+      'permisos' => function ($model) {
+        /** @var self $model */
+        return array_keys(array_filter($model->cargarPermisos()));
+      },
       'token' => function ($model) {
         return $model->getAuthKey();
       },
