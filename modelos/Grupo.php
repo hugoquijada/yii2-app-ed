@@ -5,6 +5,8 @@ namespace app\modelos;
 class Grupo extends ModeloBase {
 
   public const ADMINISTRADORES = 'Administradores';
+  public const ESCENARIO_CREAR = 'crear';
+  public const ESCENARIO_ACTUALIZAR = 'actualizar';
 
   public static function tableName() {
     return "Grupo";
@@ -19,6 +21,13 @@ class Grupo extends ModeloBase {
       [["descripcion"], "string", "max" => 500],
       [["id"], "unique"],
     ];
+  }
+
+  public function scenarios() {
+    $scenarios = parent::scenarios();
+    $scenarios[self::ESCENARIO_CREAR] = ['nombre', 'descripcion'];
+    $scenarios[self::ESCENARIO_ACTUALIZAR] = ['nombre', 'descripcion'];
+    return $scenarios;
   }
 
   public function attributeLabels() {

@@ -82,6 +82,13 @@
   },
   "repositories": [
     {
+      "type": "path",
+      "url": "../yii2-ed",
+      "options": {
+        "symlink": true
+      }
+    },
+    {
       "type": "composer",
       "url": "https://asset-packagist.org"
     }

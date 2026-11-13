@@ -20,6 +20,7 @@ use Yii;
 */
 class Configuracion extends ModeloBase {
 
+  public const ESCENARIO_ACTUALIZAR_SISTEMA = 'actualizarSistema';
   public const CLAVE_FORMATO_FLEXIBLE = 'FEX';
   public const CLAVE_TITULO_SISTEMA = 'TITULO';
   public const CLAVE_ZONA_HORARIA = 'ZH';
@@ -55,6 +56,12 @@ class Configuracion extends ModeloBase {
       ['valor', 'validarZonaHoraria'],
       [['idUsuario'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::class, 'targetAttribute' => ['idUsuario' => 'id']],
     ];
+  }
+
+  public function scenarios() {
+    $scenarios = parent::scenarios();
+    $scenarios[self::ESCENARIO_ACTUALIZAR_SISTEMA] = ['clave', 'valor'];
+    return $scenarios;
   }
 
   public function validarZonaHoraria($attribute): void {

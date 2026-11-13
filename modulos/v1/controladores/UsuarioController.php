@@ -4,6 +4,7 @@ namespace v1\controladores;
 
 use app\modelos\PermisoUsuario;
 use app\modelos\GrupoUsuario;
+use app\modelos\Permiso;
 use eDesarrollos\data\Respuesta;
 use eDesarrollos\rest\AuthController;
 use Yii;
@@ -12,6 +13,19 @@ use yii\db\Expression;
 class UsuarioController extends AuthController {
 
   public $modelClass = \app\modelos\Usuario::class;
+
+  public $permisosAccion = [
+    'index' => Permiso::MENU_ADMINISTRACION_USUARIO,
+    'post' => [
+      'permiso' => Permiso::USUARIO_CREAR,
+      'escenario' => \app\modelos\Usuario::ESCENARIO_CREAR,
+    ],
+    'put' => [
+      'permiso' => Permiso::USUARIO_EDITAR,
+      'escenario' => \app\modelos\Usuario::ESCENARIO_ACTUALIZAR,
+    ],
+    'delete' => Permiso::USUARIO_ELIMINAR,
+  ];
 
   /**
    * @param \yii\db\ActiveQuery $query
@@ -64,7 +78,7 @@ class UsuarioController extends AuthController {
 
     $transaccion = Yii::$app->db->beginTransaction();
     try {
-
+      $this->prepararModeloAccionActual($modelo);
       $modelo->load($this->req->getBodyParams(), '');
 
       if ($pwd !== '') {

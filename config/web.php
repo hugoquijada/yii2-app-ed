@@ -10,6 +10,20 @@ $config = [
   'bootstrap' => ['log'],
   'language' => 'es',
   'timezone' => 'America/Hermosillo',
+  'on beforeRequest' => function () {
+    $zonaHoraria = \app\modelos\Configuracion::find()
+      ->select('valor')
+      ->where(['clave' => \app\modelos\Configuracion::CLAVE_ZONA_HORARIA])
+      ->scalar();
+
+    if (is_string($zonaHoraria) && in_array(
+      $zonaHoraria,
+      \DateTimeZone::listIdentifiers(\DateTimeZone::AMERICA),
+      true
+    )) {
+      \Yii::$app->timeZone = $zonaHoraria;
+    }
+  },
   'defaultRoute' => 'v1/default',
   'layoutPath' => '@app/modulos/v1/vistas/layouts',
   'layout' => 'main',
@@ -58,9 +72,9 @@ $config = [
     ],
     'response' => [
       'class' => 'yii\web\Response',
-      'format' => yii\web\Response::FORMAT_JSON,
+      'format' => yii\web\Response::FORMAT_JSON, /*
       'on beforeSend' => function ($event) {
-        /** @var \yii\web\Response $response */
+        /** @var \yii\web\Response $response * /
         $response = $event->sender;
 
         // Salir si no es un error a transformar o si ya está en el formato correcto
@@ -77,7 +91,7 @@ $config = [
           $r->cuerpo['type'] = $data['type'];
         }
         $response->data = $r->cuerpo;
-      }
+      } // */
     ],
   ],
 

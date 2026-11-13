@@ -3,6 +3,7 @@
 namespace v1\controladores;
 
 use app\modelos\Configuracion;
+use app\modelos\Permiso;
 use eDesarrollos\data\Respuesta;
 use eDesarrollos\rest\AuthController;
 use yii\db\Expression;
@@ -10,6 +11,18 @@ use yii\db\Expression;
 class ConfiguracionController extends AuthController {
 
   public $modelClass = Configuracion::class;
+
+  public $permisosAccion = [
+    'index' => Permiso::MENU_ADMINISTRACION_CONFIGURACION,
+    'post' => [
+      'permiso' => Permiso::CONFIGURACION_EDITAR,
+      'escenario' => Configuracion::ESCENARIO_ACTUALIZAR_SISTEMA,
+    ],
+    'put' => [
+      'permiso' => Permiso::CONFIGURACION_EDITAR,
+      'escenario' => Configuracion::ESCENARIO_ACTUALIZAR_SISTEMA,
+    ],
+  ];
 
   public function actionPost() {
     $clave = trim($this->req->getBodyParam("clave", ""));
@@ -22,6 +35,7 @@ class ConfiguracionController extends AuthController {
       $modelo->modificado = new Expression('now()');
     }
 
+    $this->prepararModeloAccionActual($modelo);
     $modelo->load($this->req->getBodyParams(), '');
     $modelo->idUsuario = $this->usuario->id;
     if (!$modelo->save()) {

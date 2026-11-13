@@ -33,6 +33,8 @@ class Usuario extends \eDesarrollos\models\Usuario {
 
   public const ACTIVO = 1;
   public const INACTIVO = 0;
+  public const ESCENARIO_CREAR = 'crear';
+  public const ESCENARIO_ACTUALIZAR = 'actualizar';
 
   private $_permisos;
 
@@ -56,7 +58,8 @@ class Usuario extends \eDesarrollos\models\Usuario {
    */
   public function rules() {
     return [
-      [['id', 'correo', 'clave', 'nombre', 'apellidos', 'rol'], 'required'],
+      [['id', 'correo', 'nombre', 'apellidos', 'rol'], 'required'],
+      [['clave'], 'required', 'on' => [self::SCENARIO_DEFAULT, self::ESCENARIO_CREAR]],
       [['estatus'], 'default', 'value' => null],
       [['estatus'], 'integer'],
       [['creado', 'modificado', 'eliminado'], 'safe'],
@@ -66,6 +69,34 @@ class Usuario extends \eDesarrollos\models\Usuario {
       [['foto'], 'string', 'max' => 300],
       [['id'], 'unique'],
     ];
+  }
+
+  public function scenarios() {
+    $scenarios = parent::scenarios();
+    $scenarios[self::ESCENARIO_CREAR] = [
+      'correo',
+      'clave',
+      'nombre',
+      'apellidos',
+      'estatus',
+      'telefono',
+      'alias',
+      'foto',
+      'rol',
+      'login',
+    ];
+    $scenarios[self::ESCENARIO_ACTUALIZAR] = [
+      'correo',
+      'nombre',
+      'apellidos',
+      'estatus',
+      'telefono',
+      'alias',
+      'foto',
+      'rol',
+      'login',
+    ];
+    return $scenarios;
   }
 
   /**

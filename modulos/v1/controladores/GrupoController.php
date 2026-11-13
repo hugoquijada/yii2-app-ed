@@ -5,6 +5,7 @@ namespace v1\controladores;
 use app\modelos\Grupo;
 use app\modelos\PermisoGrupo;
 use app\modelos\GrupoUsuario;
+use app\modelos\Permiso;
 use eDesarrollos\data\Respuesta;
 use eDesarrollos\rest\AuthController;
 use Yii;
@@ -13,6 +14,19 @@ use yii\db\Expression;
 class GrupoController extends AuthController {
 
   public $modelClass = Grupo::class;
+
+  public $permisosAccion = [
+    'index' => Permiso::MENU_ADMINISTRACION_GRUPO,
+    'post' => [
+      'permiso' => Permiso::GRUPO_CREAR,
+      'escenario' => Grupo::ESCENARIO_CREAR,
+    ],
+    'put' => [
+      'permiso' => Permiso::GRUPO_EDITAR,
+      'escenario' => Grupo::ESCENARIO_ACTUALIZAR,
+    ],
+    'delete' => Permiso::GRUPO_ELIMINAR,
+  ];
 
   public function buscador(&$query, $request) {
     $id = $request->get($this->modeloID, "");
@@ -47,6 +61,7 @@ class GrupoController extends AuthController {
 
     $transaccion = Yii::$app->db->beginTransaction();
     try {
+      $this->prepararModeloAccionActual($modelo);
       $modelo->load($this->req->getBodyParams(), "");
       if (!$modelo->save()) {
         $transaccion->rollBack();
