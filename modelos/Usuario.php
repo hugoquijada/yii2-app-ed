@@ -4,6 +4,7 @@ namespace app\modelos;
 
 use Override;
 use Yii;
+use eDesarrollos\totp\Authenticator;
 use yii\db\Expression;
 use yii\db\Query;
 
@@ -24,6 +25,8 @@ use yii\db\Query;
  * @property string|null $modificado
  * @property string|null $eliminado
  * @property int|null $pin
+ * @property string|null $totpSemilla
+ * @property bool $totpActivo
  *
  * @property Media[] $media
  * @property Permiso[] $permisos
@@ -62,6 +65,7 @@ class Usuario extends \eDesarrollos\models\Usuario {
       [['clave'], 'required', 'on' => [self::SCENARIO_DEFAULT, self::ESCENARIO_CREAR]],
       [['estatus'], 'default', 'value' => null],
       [['estatus'], 'integer'],
+      [['totpActivo'], 'boolean'],
       [['creado', 'modificado', 'eliminado'], 'safe'],
       [['id',], 'string', 'max' => 50],
       [['correo'], 'string', 'max' => 128],
@@ -84,6 +88,7 @@ class Usuario extends \eDesarrollos\models\Usuario {
       'foto',
       'rol',
       'login',
+      'totpActivo',
     ];
     $scenarios[self::ESCENARIO_ACTUALIZAR] = [
       'correo',
@@ -240,6 +245,35 @@ class Usuario extends \eDesarrollos\models\Usuario {
 
   public function agregarClave($pwd) {
     $this->clave = Yii::$app->getSecurity()->generatePasswordHash($pwd);
+  }
+
+  public function crearSemillaTotp(): string {
+    $semilla = (new Authenticator())->crearSemilla();
+    $llave = hash('sha256', Yii::$app->params['jwt.key'], true);
+    $this->totpSemilla = base64_encode(
+      Yii::$app->security->encryptByKey($semilla, $llave)
+    );
+    $this->totpActivo = false;
+
+    return $semilla;
+  }
+
+  public function obtenerSemillaTotp(): ?string {
+    if (empty($this->totpSemilla)) {
+      return null;
+    }
+
+    $llave = hash('sha256', Yii::$app->params['jwt.key'], true);
+    $cifrado = base64_decode($this->totpSemilla, true);
+    $semilla = $cifrado === false ? false : Yii::$app->security->decryptByKey($cifrado, $llave);
+
+    return is_string($semilla) && $semilla !== '' ? $semilla : null;
+  }
+
+  public function validarCodigoTotp(string $codigo): bool {
+    $semilla = $this->obtenerSemillaTotp();
+
+    return $semilla !== null && (new Authenticator())->verifyCode($semilla, $codigo);
   }
 
   public function validarClave($pwd) {

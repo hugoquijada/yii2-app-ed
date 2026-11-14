@@ -40,6 +40,20 @@ class IniciarSesionController extends JsonController {
       return new Respuesta($modelo);
     }
 
+    if ($modelo->totpActivo) {
+      $codigo = trim($req->getBodyParam('codigoTotp', ''));
+
+      if ($codigo === '') {
+        $modelo->requiereTotp = true;
+        return new Respuesta($modelo);
+      }
+
+      if (!$modelo->validarCodigoTotp($codigo)) {
+        $modelo->addError('codigoTotp', 'Código de verificación incorrecto.');
+        return new Respuesta($modelo);
+      }
+    }
+
     return new Respuesta($modelo);
   }
 }

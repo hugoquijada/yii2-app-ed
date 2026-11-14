@@ -4,8 +4,10 @@ namespace app\modelos;
 
 class Sesion extends Usuario {
 
+  public $requiereTotp = false;
+
   public function fields() {
-    return [
+    $campos = [
       'id',
       'correo',
       'nombre',
@@ -17,12 +19,23 @@ class Sesion extends Usuario {
         /** @var self $model */
         return array_keys(array_filter($model->cargarPermisos()));
       },
-      'token' => function ($model) {
-        return $model->getAuthKey();
-      },
-      'refreshToken' => function ($model) {
-        return $model->addRefreshToken();
-      }
+      'totpActivo',
     ];
+
+    if ($this->requiereTotp) {
+      $campos['requiereTotp'] = function () {
+        return true;
+      };
+      return $campos;
+    }
+
+    $campos['token'] = function ($model) {
+      return $model->getAuthKey();
+    };
+    $campos['refreshToken'] = function ($model) {
+      return $model->addRefreshToken();
+    };
+
+    return $campos;
   }
 }

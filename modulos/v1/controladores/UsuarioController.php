@@ -13,6 +13,15 @@ use yii\db\Expression;
 class UsuarioController extends AuthController {
 
   public $modelClass = \app\modelos\Usuario::class;
+  public $accionesPermitidas = [
+    'index',
+    'post',
+    'put',
+    'delete',
+    'totp-configurar',
+    'totp-confirmar',
+    'totp-desactivar',
+  ];
 
   public $permisosAccion = [
     'index' => Permiso::MENU_ADMINISTRACION_USUARIO,
@@ -53,6 +62,61 @@ class UsuarioController extends AuthController {
         ["ilike", "correo", $buscar],
       ]);
     }
+  }
+
+  public function actionTotpConfigurar() {
+    $semilla = $this->usuario->crearSemillaTotp();
+    $this->usuario->modificado = new Expression('now()');
+
+    if (!$this->usuario->save(false, ['totpSemilla', 'totpActivo', 'modificado'])) {
+      return (new Respuesta())
+        ->esError()
+        ->mensaje('No fue posible preparar la autenticación en dos pasos.');
+    }
+
+    $nombre = rawurlencode(Yii::$app->name . ':' . $this->usuario->correo);
+    $issuer = rawurlencode(Yii::$app->name);
+
+    return (new Respuesta())
+      ->detalle([
+        'semilla' => $semilla,
+        'uri' => "otpauth://totp/{$nombre}?secret={$semilla}&issuer={$issuer}",
+      ]);
+  }
+
+  public function actionTotpConfirmar() {
+    $codigo = trim($this->req->getBodyParam('codigo', ''));
+
+    if (!$this->usuario->validarCodigoTotp($codigo)) {
+      $this->usuario->addError('codigo', 'Código de verificación incorrecto.');
+      return new Respuesta($this->usuario);
+    }
+
+    $this->usuario->totpActivo = true;
+    $this->usuario->modificado = new Expression('now()');
+    $this->usuario->save(false, ['totpActivo', 'modificado']);
+
+    return (new Respuesta())
+      ->detalle(['totpActivo' => true])
+      ->mensaje('La autenticación en dos pasos fue activada.');
+  }
+
+  public function actionTotpDesactivar() {
+    $codigo = trim($this->req->getBodyParam('codigo', ''));
+
+    if (!$this->usuario->validarCodigoTotp($codigo)) {
+      $this->usuario->addError('codigo', 'Código de verificación incorrecto.');
+      return new Respuesta($this->usuario);
+    }
+
+    $this->usuario->totpActivo = false;
+    $this->usuario->totpSemilla = null;
+    $this->usuario->modificado = new Expression('now()');
+    $this->usuario->save(false, ['totpActivo', 'totpSemilla', 'modificado']);
+
+    return (new Respuesta())
+      ->detalle(['totpActivo' => false])
+      ->mensaje('La autenticación en dos pasos fue desactivada.');
   }
 
   public function actionPost() {
