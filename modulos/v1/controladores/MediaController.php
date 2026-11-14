@@ -2,11 +2,16 @@
 
 namespace v1\controladores;
 
-use eDesarrollos\rest\JsonController;
+use app\modelos\Permiso;
+use eDesarrollos\rest\AuthController;
 
-class MediaController extends JsonController {
+class MediaController extends AuthController {
 
   public $modelClass = \app\modelos\Media::class;
+
+  public $permisosAccion = [
+    'index' => Permiso::MENU_CATALOGOS,
+  ];
 
   public function buscador(&$query, $request) {
     $id = $request->get($this->modeloID, "");
