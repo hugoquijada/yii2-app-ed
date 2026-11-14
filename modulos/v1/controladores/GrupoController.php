@@ -53,6 +53,7 @@ class GrupoController extends AuthController {
 
     if ($modelo === null) {
       $modelo = new Grupo();
+      $modelo->scenario = Grupo::ESCENARIO_CREAR;
       $modelo->uuid();
       $modelo->creado = new Expression("now()");
     } else {

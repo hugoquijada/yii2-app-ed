@@ -15,6 +15,7 @@ class Grupo extends ModeloBase {
   public function rules() {
     return [
       [["id", "nombre"], "required"],
+      [["nombre"], "required", "on" => self::ESCENARIO_CREAR],
       [["creado", "modificado", "eliminado"], "safe"],
       [["id"], "string", "max" => 36],
       [["nombre"], "string", "max" => 200],
@@ -42,7 +43,7 @@ class Grupo extends ModeloBase {
   }
 
   public function fields() {
-    return ["id", "nombre", "descripcion", "creado", "modificado", "eliminado"];
+    return ["id", "nombre", "descripcion", "creado", "modificado"];
   }
 
   public function extraFields() {

@@ -16,7 +16,7 @@ Plantilla base de eDesarrollos sobre Yii2. Este proyecto consume `edesarrollos/y
 
 ## Instalacion
 
-Para crear un proyecto nuevo:
+Para crear un proyecto nuevo desde Packagist:
 
 ```bash
 composer create-project --prefer-dist edesarrollos/yii2-app-ed
@@ -32,6 +32,10 @@ Si es una instalacion nueva, el proyecto ejecuta scripts para:
 
 - generar la llave JWT local
 - ajustar permisos base
+
+Después crea `config/db.php` a partir de `config/db.php.example` y sustituye
+sus valores de ejemplo. `config/db.php` y `.jwt-key` son locales: no los copies
+ni los confirmes en Git.
 
 ## Estructura principal
 

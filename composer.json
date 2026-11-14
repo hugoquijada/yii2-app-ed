@@ -1,30 +1,25 @@
 {
-  "name": "yiisoft/yii2-app-basic",
-  "description": "Yii 2 Basic Project Template",
+  "name": "edesarrollos/yii2-app-ed",
+  "description": "Plantilla base de eDesarrollos para aplicaciones Yii2 REST.",
   "keywords": [
     "yii2",
-    "framework",
-    "basic",
-    "project template"
+    "rest",
+    "project-template",
+    "edesarrollos"
   ],
-  "homepage": "https://www.yiiframework.com/",
+  "homepage": "https://github.com/hugoquijada/yii2-base-ed",
   "type": "project",
   "license": "BSD-3-Clause",
   "support": {
-    "issues": "https://github.com/yiisoft/yii2/issues?state=open",
-    "forum": "https://www.yiiframework.com/forum/",
-    "wiki": "https://www.yiiframework.com/wiki/",
-    "irc": "ircs://irc.libera.chat:6697/yii",
-    "source": "https://github.com/yiisoft/yii2"
+    "source": "https://github.com/hugoquijada/yii2-base-ed"
   },
-  "minimum-stability": "dev",
   "require": {
     "php": ">=7.4.0",
     "yiisoft/yii2": "^2.0.54",
-    "yiisoft/yii2-bootstrap5": "2.0.2",
-    "yiisoft/yii2-symfonymailer": "2.0.3",
+    "yiisoft/yii2-bootstrap5": "^2.0.2",
+    "yiisoft/yii2-symfonymailer": "^2.0.3",
     "edesarrollos/yii2-ed": "^2.0",
-    "dragonmantank/cron-expression": "^3.0@dev"
+    "dragonmantank/cron-expression": "^3.0"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",
@@ -36,6 +31,7 @@
     "codeception/module-yii2": "^1.1",
     "codeception/module-filesystem": "^3.0 || ^2.0 || ^1.1",
     "codeception/verify": "^3.0 || ^2.2",
+    "phpunit/phpunit": "^11.5",
     "symfony/browser-kit": "^6.0 || >=2.7 <=4.2.4"
   },
   "config": {
@@ -81,13 +77,6 @@
     }
   },
   "repositories": [
-    {
-      "type": "path",
-      "url": "../yii2-ed",
-      "options": {
-        "symlink": true
-      }
-    },
     {
       "type": "composer",
       "url": "https://asset-packagist.org"
