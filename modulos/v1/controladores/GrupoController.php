@@ -14,6 +14,15 @@ use yii\db\Expression;
 class GrupoController extends AuthController {
 
   public $modelClass = Grupo::class;
+  public $importacionHabilitada = true;
+  public $accionesPermitidas = [
+    'index',
+    'post',
+    'put',
+    'delete',
+    'importar-vista-previa',
+    'importar-aplicar',
+  ];
 
   public $permisosAccion = [
     'index' => Permiso::MENU_ADMINISTRACION_GRUPO,
@@ -26,6 +35,8 @@ class GrupoController extends AuthController {
       'escenario' => Grupo::ESCENARIO_ACTUALIZAR,
     ],
     'delete' => Permiso::GRUPO_ELIMINAR,
+    'importar-vista-previa' => [Permiso::GRUPO_CREAR, Permiso::GRUPO_EDITAR],
+    'importar-aplicar' => [Permiso::GRUPO_CREAR, Permiso::GRUPO_EDITAR],
   ];
 
   public function buscador(&$query, $request) {
