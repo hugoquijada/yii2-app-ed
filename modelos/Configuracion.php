@@ -25,12 +25,16 @@ class Configuracion extends ModeloBase {
   public const CLAVE_TITULO_SISTEMA = 'TITULO';
   public const CLAVE_ZONA_HORARIA = 'ZH';
   public const CLAVE_LOGO = 'LOGO';
+  public const CLAVE_COLOR_PRIMARIO = 'COLOR_PRIMARIO';
+  public const CLAVE_COLOR_SECUNDARIO = 'COLOR_SECUNDARIO';
 
   public const CLAVES_SISTEMA = [
     self::CLAVE_FORMATO_FLEXIBLE,
     self::CLAVE_TITULO_SISTEMA,
     self::CLAVE_ZONA_HORARIA,
     self::CLAVE_LOGO,
+    self::CLAVE_COLOR_PRIMARIO,
+    self::CLAVE_COLOR_SECUNDARIO,
   ];
 
   /**
@@ -54,8 +58,19 @@ class Configuracion extends ModeloBase {
       [['nombre'], 'string', 'max' => 255],
       [['clave'], 'unique'],
       ['valor', 'validarZonaHoraria'],
+      ['valor', 'validarColor'],
       [['idUsuario'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::class, 'targetAttribute' => ['idUsuario' => 'id']],
     ];
+  }
+
+  public function validarColor($attribute): void {
+    if (!in_array($this->clave, [self::CLAVE_COLOR_PRIMARIO, self::CLAVE_COLOR_SECUNDARIO], true)) {
+      return;
+    }
+
+    if (!preg_match('/^#[0-9A-Fa-f]{6}$/', (string)$this->$attribute)) {
+      $this->addError($attribute, 'El color debe usar el formato hexadecimal #RRGGBB.');
+    }
   }
 
   public function scenarios() {
