@@ -10,8 +10,7 @@ return [
   'senderEmail' => 'noreply@example.com',
   'senderName' => 'Mailer',
   'jwt.key' => $jwtKey,
-  // Cinco minutos temporalmente para validar la renovación automática.
-  'jwt.duracion' => 300,
+  'jwt.duracion' => 3600,
   'exportacion' => $exportacion,
   'openapi' => $openapi,
 ];
