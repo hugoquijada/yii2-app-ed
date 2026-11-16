@@ -7,6 +7,7 @@ use app\modelos\Sesion;
 use eDesarrollos\data\Respuesta;
 use eDesarrollos\rest\JsonController;
 use Yii;
+use yii\db\Expression;
 
 class RefrescarTokenController extends JsonController {
 
@@ -23,7 +24,7 @@ class RefrescarTokenController extends JsonController {
 
     $refreshToken = RefreshTokenUsuario::find()
       ->andWhere(["token" => $token])
-      ->andWhere(["expiracion" => ">=", date("Y-m-d H:i:s")])
+      ->andWhere(['>=', 'expiracion', new Expression('NOW()')])
       ->andWhere(["eliminado" => null])
       ->one();
 
