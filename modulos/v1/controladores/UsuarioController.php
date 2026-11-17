@@ -21,6 +21,8 @@ class UsuarioController extends AuthController {
     'totp-configurar',
     'totp-confirmar',
     'totp-desactivar',
+    'importar-vista-previa',
+    'importar-aplicar',
   ];
 
   public $permisosAccion = [
