@@ -25,6 +25,7 @@ class Permiso extends ModeloBase {
   public const MENU_ADMINISTRACION_PERMISO = 'MENU_ADMINISTRACION_PERMISO';
   public const MENU_ADMINISTRACION_GRUPO = 'MENU_ADMINISTRACION_GRUPO';
   public const MENU_ADMINISTRACION_CONFIGURACION = 'MENU_ADMINISTRACION_CONFIGURACION';
+  public const MENU_ADMINISTRACION_BITACORA = 'MENU_ADMINISTRACION_BITACORA';
 
   public const USUARIO_CREAR = 'USUARIO_CREAR';
   public const USUARIO_EDITAR = 'USUARIO_EDITAR';
@@ -36,6 +37,7 @@ class Permiso extends ModeloBase {
   public const GRUPO_EDITAR = 'GRUPO_EDITAR';
   public const GRUPO_ELIMINAR = 'GRUPO_ELIMINAR';
   public const CONFIGURACION_EDITAR = 'CONFIGURACION_EDITAR';
+  public const BITACORA_VER = 'BITACORA_VER';
 
   public const ADMINISTRACION = [
     self::MENU_ADMINISTRACION,
@@ -53,6 +55,8 @@ class Permiso extends ModeloBase {
     self::GRUPO_EDITAR,
     self::GRUPO_ELIMINAR,
     self::CONFIGURACION_EDITAR,
+    self::MENU_ADMINISTRACION_BITACORA,
+    self::BITACORA_VER,
   ];
   /**
    * {@inheritdoc}

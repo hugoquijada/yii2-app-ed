@@ -20,6 +20,9 @@ $config = [
     'cache' => [
       'class' => 'yii\caching\FileCache',
     ],
+    'bitacoraCambio' => [
+      'class' => 'eDesarrollos\\auditoria\\BitacoraCambio',
+    ],
     'log' => [
       'targets' => [
         [

@@ -7,7 +7,7 @@ $mailer = require __DIR__ . '/correo.php';
 $config = [
   'id' => 'basic',
   'basePath' => dirname(__DIR__),
-  'bootstrap' => ['log'],
+  'bootstrap' => ['log', 'bitacoraPeticiones'],
   'language' => 'es',
   'timezone' => 'America/Hermosillo',
   'on beforeRequest' => function () {
@@ -47,6 +47,12 @@ $config = [
     ],
     'cache' => [
       'class' => 'yii\caching\FileCache',
+    ],
+    'bitacoraCambio' => [
+      'class' => 'eDesarrollos\\auditoria\\BitacoraCambio',
+    ],
+    'bitacoraPeticiones' => [
+      'class' => 'eDesarrollos\\auditoria\\BitacoraPeticiones',
     ],
     'errorHandler' => [
       'errorAction' => 'v1/default/error',

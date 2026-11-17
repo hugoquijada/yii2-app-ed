@@ -22,6 +22,7 @@ class Modulo extends ModeloBase {
   public const PERMISO = 'PERMISO';
   public const GRUPO = 'GRUPO';
   public const CONFIGURACION = 'CONFIGURACION';
+  public const BITACORA = 'BITACORA';
 
   /**
    * {@inheritdoc}
