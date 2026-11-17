@@ -19,6 +19,8 @@ use Yii;
  * @property string|null $creado
  * @property string|null $modificado
  * @property string|null $eliminado
+ *
+ * @property Usuario|null $usuario
  */
 class Media extends ModeloBase {
 
@@ -86,6 +88,12 @@ class Media extends ModeloBase {
   }
 
   public function extraFields() {
-    return [];
+    return [
+      'usuario',
+    ];
+  }
+
+  public function getUsuario() {
+    return $this->hasOne(Usuario::class, ['id' => 'idUsuario']);
   }
 }
