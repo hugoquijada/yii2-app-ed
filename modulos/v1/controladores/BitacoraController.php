@@ -2,6 +2,8 @@
 
 namespace v1\controladores;
 
+use app\modelos\BitacoraCambio;
+use app\modelos\BitacoraPeticion;
 use app\modelos\Permiso;
 use eDesarrollos\data\Respuesta;
 use eDesarrollos\rest\AuthController;
@@ -16,13 +18,13 @@ class BitacoraController extends AuthController {
   ];
 
   public function actionCambios() {
-    $query = (new Query())->from('BitacoraCambio');
+    $query = BitacoraCambio::find();
     $this->filtrar($query, ['tabla', 'accion']);
     return new Respuesta($query, $this->limite, $this->pagina, $this->ordenar ?: 'fecha-desc');
   }
 
   public function actionPeticiones() {
-    $query = (new Query())->from('BitacoraPeticion');
+    $query = BitacoraPeticion::find();
     $this->filtrar($query, ['ruta', 'metodo', 'codigo']);
     return new Respuesta($query, $this->limite, $this->pagina, $this->ordenar ?: 'fecha-desc');
   }
