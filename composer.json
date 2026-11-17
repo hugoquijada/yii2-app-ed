@@ -7,11 +7,11 @@
     "project-template",
     "edesarrollos"
   ],
-  "homepage": "https://github.com/hugoquijada/yii2-base-ed",
+  "homepage": "https://github.com/hugoquijada/yii2-app-ed",
   "type": "project",
   "license": "BSD-3-Clause",
   "support": {
-    "source": "https://github.com/hugoquijada/yii2-base-ed"
+    "source": "https://github.com/hugoquijada/yii2-app-ed"
   },
   "require": {
     "php": ">=7.4.0",
