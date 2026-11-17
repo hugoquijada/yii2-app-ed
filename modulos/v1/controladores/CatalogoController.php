@@ -88,9 +88,13 @@ class CatalogoController extends AuthController {
 
     $condiciones = ['OR'];
     foreach ($this->catalogoActual['campos'] as $campo) {
-      $condiciones[] = ['ilike', $campo['id'], $buscar];
+      if ($campo['editable'] ?? false) {
+        $condiciones[] = ['ilike', $campo['id'], $buscar];
+      }
     }
-    $query->andWhere($condiciones);
+    if (count($condiciones) > 1) {
+      $query->andWhere($condiciones);
+    }
   }
 
   private function guardarCatalogo() {
@@ -112,7 +116,7 @@ class CatalogoController extends AuthController {
     $datos = [];
     foreach ($this->catalogoActual['campos'] as $campo) {
       $id = $campo['id'];
-      if ($this->req->getBodyParam($id, null) !== null) {
+      if (($campo['editable'] ?? false) && $this->req->getBodyParam($id, null) !== null) {
         $datos[$id] = $this->req->getBodyParam($id);
       }
     }
@@ -140,8 +144,10 @@ class CatalogoController extends AuthController {
         'llavePrimaria' => 'clave',
         'permiteEliminar' => false,
         'campos' => [
-          ['id' => 'clave', 'titulo' => 'Clave'],
-          ['id' => 'valor', 'titulo' => 'Valor'],
+          ['id' => 'clave', 'titulo' => 'Clave', 'editable' => true],
+          ['id' => 'valor', 'titulo' => 'Valor', 'editable' => true],
+          ['id' => 'creado', 'titulo' => 'Creado', 'editable' => false],
+          ['id' => 'modificado', 'titulo' => 'Modificado', 'editable' => false],
         ],
       ],
     ];
