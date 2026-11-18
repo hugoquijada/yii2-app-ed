@@ -109,7 +109,7 @@ class m261112_120000_agrega_grupos_permisos extends Migration {
       ]);
     }
 
-    foreach (Permiso::ADMINISTRACION as $idPermiso) {
+    foreach (array_keys($permisos) as $idPermiso) {
       $asignado = (new Query())
         ->from('PermisoGrupo')
         ->where([
