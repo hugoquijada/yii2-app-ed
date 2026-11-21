@@ -22,6 +22,8 @@ use yii\db\Query;
  * @property string|null $foto
  * @property string $rol
  * @property string|null $login
+ * @property string|null $idUsuarioCreador
+ * @property string|null $idUsuarioModificador
  * @property string|null $modificado
  * @property string|null $eliminado
  * @property int|null $pin
@@ -31,6 +33,8 @@ use yii\db\Query;
  * @property Media[] $media
  * @property Permiso[] $permisos
  * @property Grupo[] $grupos
+ * @property Usuario|null $creador
+ * @property Usuario|null $modificador
  */
 class Usuario extends \eDesarrollos\models\Usuario {
 
@@ -68,10 +72,13 @@ class Usuario extends \eDesarrollos\models\Usuario {
       [['totpActivo'], 'boolean'],
       [['creado', 'modificado', 'eliminado'], 'safe'],
       [['id',], 'string', 'max' => 50],
+      [['idUsuarioCreador', 'idUsuarioModificador'], 'string', 'max' => 36],
       [['correo'], 'string', 'max' => 128],
       [['clave', 'nombre', 'apellidos', 'telefono', 'alias', 'rol', 'login'], 'string', 'max' => 100],
       [['foto'], 'string', 'max' => 300],
       [['id'], 'unique'],
+      [['idUsuarioCreador'], 'exist', 'skipOnError' => true, 'targetClass' => self::class, 'targetAttribute' => ['idUsuarioCreador' => 'id']],
+      [['idUsuarioModificador'], 'exist', 'skipOnError' => true, 'targetClass' => self::class, 'targetAttribute' => ['idUsuarioModificador' => 'id']],
     ];
   }
 
@@ -120,6 +127,8 @@ class Usuario extends \eDesarrollos\models\Usuario {
       'foto' => 'Foto',
       'rol' => 'Rol',
       'login' => 'Login',
+      'idUsuarioCreador' => 'Usuario creador',
+      'idUsuarioModificador' => 'Usuario modificador',
       'creado' => 'Creado',
       'modificado' => 'Modificado',
       'eliminado' => 'Eliminado',
@@ -149,6 +158,8 @@ class Usuario extends \eDesarrollos\models\Usuario {
       'foto',
       'rol',
       'login',
+      'idUsuarioCreador',
+      'idUsuarioModificador',
       'creado',
       'modificado',
       'nombreCompleto' => function ($modelo) {
@@ -166,6 +177,8 @@ class Usuario extends \eDesarrollos\models\Usuario {
       'menus',
       'media',
       'rutas',
+      'creador',
+      'modificador',
     ];
   }
 
@@ -211,6 +224,14 @@ class Usuario extends \eDesarrollos\models\Usuario {
    */
   public function getMedia() {
     return $this->hasMany(Media::class, ['idUsuario' => 'id']);
+  }
+
+  public function getCreador() {
+    return $this->hasOne(self::class, ['id' => 'idUsuarioCreador']);
+  }
+
+  public function getModificador() {
+    return $this->hasOne(self::class, ['id' => 'idUsuarioModificador']);
   }
 
   public function getPermisos() {

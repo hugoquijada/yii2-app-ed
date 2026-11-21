@@ -18,9 +18,12 @@ class Grupo extends ModeloBase {
       [["nombre"], "required", "on" => self::ESCENARIO_CREAR],
       [["creado", "modificado", "eliminado"], "safe"],
       [["id"], "string", "max" => 36],
+      [["idUsuarioCreador", "idUsuarioModificador"], "string", "max" => 36],
       [["nombre"], "string", "max" => 200],
       [["descripcion"], "string", "max" => 500],
       [["id"], "unique"],
+      [['idUsuarioCreador'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::class, 'targetAttribute' => ['idUsuarioCreador' => 'id']],
+      [['idUsuarioModificador'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::class, 'targetAttribute' => ['idUsuarioModificador' => 'id']],
     ];
   }
 
@@ -36,6 +39,8 @@ class Grupo extends ModeloBase {
       "id" => "ID",
       "nombre" => "Nombre",
       "descripcion" => "Descripción",
+      "idUsuarioCreador" => "Usuario creador",
+      "idUsuarioModificador" => "Usuario modificador",
       "creado" => "Creado",
       "modificado" => "Modificado",
       "eliminado" => "Eliminado",
@@ -43,11 +48,11 @@ class Grupo extends ModeloBase {
   }
 
   public function fields() {
-    return ["id", "nombre", "descripcion", "creado", "modificado"];
+    return ["id", "nombre", "descripcion", "idUsuarioCreador", "idUsuarioModificador", "creado", "modificado"];
   }
 
   public function extraFields() {
-    return ["permisos", "usuarios"];
+    return ["permisos", "usuarios", "creador", "modificador"];
   }
 
   public function getPermisos() {

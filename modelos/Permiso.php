@@ -11,6 +11,8 @@ use Yii;
  * @property string|null $idModulo
  * @property string|null $nombre
  * @property string|null $descripcion
+ * @property string|null $idUsuarioCreador
+ * @property string|null $idUsuarioModificador
  * @property string|null $creado
  * @property string|null $modificado
  * @property string|null $eliminado
@@ -37,6 +39,8 @@ class Permiso extends ModeloBase {
   public const GRUPO_EDITAR = 'GRUPO_EDITAR';
   public const GRUPO_ELIMINAR = 'GRUPO_ELIMINAR';
   public const CONFIGURACION_EDITAR = 'CONFIGURACION_EDITAR';
+  public const CONFIGURACION_IMPORTAR = 'CONFIGURACION_IMPORTAR';
+  public const CONFIGURACION_EXPORTAR = 'CONFIGURACION_EXPORTAR';
   public const BITACORA_VER = 'BITACORA_VER';
 
   public const ADMINISTRACION = [
@@ -66,6 +70,14 @@ class Permiso extends ModeloBase {
     return 'Permiso';
   }
 
+  public static function catalogoImportar(string $recurso): string {
+    return strtoupper($recurso) . '_IMPORTAR';
+  }
+
+  public static function catalogoExportar(string $recurso): string {
+    return strtoupper($recurso) . '_EXPORTAR';
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -74,11 +86,14 @@ class Permiso extends ModeloBase {
       [['id'], 'required'],
       [['creado', 'modificado', 'eliminado'], 'safe'],
       [['id'], 'string', 'max' => 36],
+      [['idUsuarioCreador', 'idUsuarioModificador'], 'string', 'max' => 36],
       [['idModulo'], 'string', 'max' => 50],
       [['nombre'], 'string', 'max' => 200],
       [['descripcion'], 'string', 'max' => 500],
       [['id'], 'unique'],
       [['idModulo'], 'exist', 'skipOnError' => true, 'targetClass' => Modulo::class, 'targetAttribute' => ['idModulo' => 'id']],
+      [['idUsuarioCreador'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::class, 'targetAttribute' => ['idUsuarioCreador' => 'id']],
+      [['idUsuarioModificador'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::class, 'targetAttribute' => ['idUsuarioModificador' => 'id']],
     ];
   }
 
@@ -91,6 +106,8 @@ class Permiso extends ModeloBase {
       'idModulo' => 'Id Modulo',
       'nombre' => 'Nombre',
       'descripcion' => 'Descripcion',
+      'idUsuarioCreador' => 'Usuario creador',
+      'idUsuarioModificador' => 'Usuario modificador',
       'creado' => 'Creado',
       'modificado' => 'Modificado',
       'eliminado' => 'Eliminado',
@@ -103,6 +120,8 @@ class Permiso extends ModeloBase {
       'idModulo',
       'nombre',
       'descripcion',
+      'idUsuarioCreador',
+      'idUsuarioModificador',
       'creado',
       'modificado',
       'eliminado',
@@ -112,6 +131,8 @@ class Permiso extends ModeloBase {
   public function extraFields() {
     return [
       'modulo',
+      'creador',
+      'modificador',
     ];
   }
 

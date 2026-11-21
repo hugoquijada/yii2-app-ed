@@ -3,6 +3,7 @@
 namespace v1\controladores;
 
 use app\modelos\Configuracion;
+use app\modelos\Modulo;
 use app\modelos\Permiso;
 use eDesarrollos\data\Respuesta;
 use eDesarrollos\rest\AuthController;
@@ -20,7 +21,15 @@ class CatalogoController extends AuthController {
 
   private $catalogoActual = null;
 
-  public $accionesPermitidas = ['index', 'post', 'put', 'delete'];
+  public $accionesPermitidas = [
+    'index',
+    'post',
+    'put',
+    'delete',
+    'importar-vista-previa',
+    'importar-aplicar',
+  ];
+  public $importacionHabilitada = true;
 
   public $permisosAccion = [
     'index' => Permiso::MENU_CATALOGOS,
@@ -41,6 +50,7 @@ class CatalogoController extends AuthController {
       $this->modeloID = $catalogo['llavePrimaria'];
       $this->nombreSingular = $catalogo['nombre'];
       $this->nombrePlural = $catalogo['nombre'];
+      $this->permisosAccion = $this->permisosCatalogo($catalogo);
     }
 
     return parent::beforeAction($action);
@@ -141,6 +151,7 @@ class CatalogoController extends AuthController {
         'nombre' => 'Configuración de ejemplo',
         'descripcion' => 'Catálogo de prueba con edición directa en la tabla.',
         'modelo' => Configuracion::class,
+        'recurso' => Modulo::CONFIGURACION,
         'llavePrimaria' => 'clave',
         'permiteEliminar' => false,
         'campos' => [
@@ -151,5 +162,36 @@ class CatalogoController extends AuthController {
         ],
       ],
     ];
+  }
+
+  private function permisosCatalogo(array $catalogo): array {
+    $recurso = $catalogo['recurso'] ?? strtoupper($catalogo['id']);
+    $permisos = [
+      'index' => Permiso::MENU_CATALOGOS,
+      'post' => Permiso::CONFIGURACION_EDITAR,
+      'put' => Permiso::CONFIGURACION_EDITAR,
+      'importar-vista-previa' => [
+        Permiso::MENU_CATALOGOS,
+        Permiso::catalogoImportar($recurso),
+      ],
+      'importar-aplicar' => [
+        Permiso::MENU_CATALOGOS,
+        Permiso::catalogoImportar($recurso),
+      ],
+    ];
+
+    if ($this->esExportacion()) {
+      $permisos['index'] = [
+        Permiso::MENU_CATALOGOS,
+        Permiso::catalogoExportar($recurso),
+      ];
+    }
+
+    return $permisos;
+  }
+
+  private function esExportacion(): bool {
+    $formato = strtolower((string)\Yii::$app->request->get('formato', 'json'));
+    return !in_array($formato, ['json', 'xml', 'html'], true);
   }
 }

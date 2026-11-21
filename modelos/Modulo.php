@@ -9,6 +9,8 @@ use Yii;
  *
  * @property string $id
  * @property string|null $nombre
+ * @property string|null $idUsuarioCreador
+ * @property string|null $idUsuarioModificador
  * @property string|null $creado
  * @property string|null $modificado
  * @property string|null $eliminado
@@ -40,8 +42,11 @@ class Modulo extends ModeloBase {
       [['id'], 'required'],
       [['creado', 'modificado', 'eliminado'], 'safe'],
       [['id'], 'string', 'max' => 50],
+      [['idUsuarioCreador', 'idUsuarioModificador'], 'string', 'max' => 36],
       [['nombre'], 'string', 'max' => 200],
       [['id'], 'unique'],
+      [['idUsuarioCreador'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::class, 'targetAttribute' => ['idUsuarioCreador' => 'id']],
+      [['idUsuarioModificador'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::class, 'targetAttribute' => ['idUsuarioModificador' => 'id']],
     ];
   }
 
@@ -52,6 +57,8 @@ class Modulo extends ModeloBase {
     return [
       'id' => 'ID',
       'nombre' => 'Nombre',
+      'idUsuarioCreador' => 'Usuario creador',
+      'idUsuarioModificador' => 'Usuario modificador',
       'creado' => 'Creado',
       'modificado' => 'Modificado',
       'eliminado' => 'Eliminado',
@@ -62,6 +69,8 @@ class Modulo extends ModeloBase {
     return [
       'id',
       'nombre',
+      'idUsuarioCreador',
+      'idUsuarioModificador',
       'creado',
       'modificado',
       'eliminado',
@@ -71,6 +80,8 @@ class Modulo extends ModeloBase {
   public function extraFields() {
     return [
       'permisos',
+      'creador',
+      'modificador',
     ];
   }
 

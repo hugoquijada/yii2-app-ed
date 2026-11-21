@@ -8,6 +8,8 @@ use Yii;
 * Clase modelo para la tabla "Configuracion".
 *
 * @property string|null $idUsuario
+ * @property string|null $idUsuarioCreador
+ * @property string|null $idUsuarioModificador
 * @property string $clave
 * @property string|null $valor
 * @property string|null $nombre
@@ -17,6 +19,8 @@ use Yii;
 * @property string|null $eliminado
 *
 * @property Usuario $usuario
+ * @property Usuario $creador
+ * @property Usuario $modificador
 */
 class Configuracion extends ModeloBase {
 
@@ -53,13 +57,15 @@ class Configuracion extends ModeloBase {
       [['clave'], 'required'],
       [['valor', 'descripcion'], 'string'],
       [['creado', 'modificado', 'eliminado'], 'safe'],
-      [['idUsuario'], 'string', 'max' => 36],
+      [['idUsuario', 'idUsuarioCreador', 'idUsuarioModificador'], 'string', 'max' => 36],
       [['clave'], 'string', 'max' => 50],
       [['nombre'], 'string', 'max' => 255],
       [['clave'], 'unique'],
       ['valor', 'validarZonaHoraria'],
       ['valor', 'validarColor'],
       [['idUsuario'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::class, 'targetAttribute' => ['idUsuario' => 'id']],
+      [['idUsuarioCreador'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::class, 'targetAttribute' => ['idUsuarioCreador' => 'id']],
+      [['idUsuarioModificador'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::class, 'targetAttribute' => ['idUsuarioModificador' => 'id']],
     ];
   }
 
@@ -96,6 +102,8 @@ class Configuracion extends ModeloBase {
   public function attributeLabels() {
     return [
       'idUsuario' => 'Id Usuario',
+      'idUsuarioCreador' => 'Usuario creador',
+      'idUsuarioModificador' => 'Usuario modificador',
       'clave' => 'Clave',
       'valor' => 'Valor',
       'nombre' => 'Nombre',
@@ -109,6 +117,8 @@ class Configuracion extends ModeloBase {
   public function fields () {
     return [
       'idUsuario',
+      'idUsuarioCreador',
+      'idUsuarioModificador',
       'clave',
       'valor',
       'nombre',
@@ -122,6 +132,8 @@ class Configuracion extends ModeloBase {
   public function extraFields() {
     return [
       'usuario',
+      'creador',
+      'modificador',
     ];
   }
 

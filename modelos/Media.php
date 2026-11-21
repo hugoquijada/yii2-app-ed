@@ -9,6 +9,8 @@ use Yii;
  *
  * @property string $id
  * @property string|null $idUsuario
+ * @property string|null $idUsuarioCreador
+ * @property string|null $idUsuarioModificador
  * @property string $nombre
  * @property string|null $uuid
  * @property int|null $peso
@@ -21,6 +23,8 @@ use Yii;
  * @property string|null $eliminado
  *
  * @property Usuario|null $usuario
+ * @property Usuario|null $creador
+ * @property Usuario|null $modificador
  */
 class Media extends ModeloBase {
 
@@ -42,11 +46,13 @@ class Media extends ModeloBase {
       [['peso'], 'integer'],
       [['creado', 'modificado', 'eliminado'], 'safe'],
       [['id'], 'string', 'max' => 50],
-      [['idUsuario'], 'string', 'max' => 36],
+      [['idUsuario', 'idUsuarioCreador', 'idUsuarioModificador'], 'string', 'max' => 36],
       [['nombre', 'uuid', 'mimetype'], 'string', 'max' => 100],
       [['extension'], 'string', 'max' => 5],
       [['ruta', 'descripcion'], 'string', 'max' => 500],
       [['id'], 'unique'],
+      [['idUsuarioCreador'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::class, 'targetAttribute' => ['idUsuarioCreador' => 'id']],
+      [['idUsuarioModificador'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::class, 'targetAttribute' => ['idUsuarioModificador' => 'id']],
     ];
   }
 
@@ -57,6 +63,8 @@ class Media extends ModeloBase {
     return [
       'id' => 'ID',
       'idUsuario' => 'Id Usuario',
+      'idUsuarioCreador' => 'Usuario creador',
+      'idUsuarioModificador' => 'Usuario modificador',
       'nombre' => 'Nombre',
       'uuid' => 'Uuid',
       'peso' => 'Peso',
@@ -74,6 +82,8 @@ class Media extends ModeloBase {
     return [
       'id',
       'idUsuario',
+      'idUsuarioCreador',
+      'idUsuarioModificador',
       'nombre',
       'uuid',
       'peso',
@@ -90,6 +100,8 @@ class Media extends ModeloBase {
   public function extraFields() {
     return [
       'usuario',
+      'creador',
+      'modificador',
     ];
   }
 
