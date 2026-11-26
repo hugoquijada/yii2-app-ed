@@ -31,6 +31,8 @@ class Configuracion extends ModeloBase {
   public const CLAVE_LOGO = 'LOGO';
   public const CLAVE_COLOR_PRIMARIO = 'COLOR_PRIMARIO';
   public const CLAVE_COLOR_SECUNDARIO = 'COLOR_SECUNDARIO';
+  public const CLAVE_COLOR_FONDO_MENU = 'COLOR_FONDO_MENU';
+  public const CLAVE_COLOR_FONDO_CONTENIDO = 'COLOR_FONDO_CONTENIDO';
 
   public const CLAVES_SISTEMA = [
     self::CLAVE_FORMATO_FLEXIBLE,
@@ -39,6 +41,8 @@ class Configuracion extends ModeloBase {
     self::CLAVE_LOGO,
     self::CLAVE_COLOR_PRIMARIO,
     self::CLAVE_COLOR_SECUNDARIO,
+    self::CLAVE_COLOR_FONDO_MENU,
+    self::CLAVE_COLOR_FONDO_CONTENIDO,
   ];
 
   /**
@@ -70,7 +74,12 @@ class Configuracion extends ModeloBase {
   }
 
   public function validarColor($attribute): void {
-    if (!in_array($this->clave, [self::CLAVE_COLOR_PRIMARIO, self::CLAVE_COLOR_SECUNDARIO], true)) {
+    if (!in_array($this->clave, [
+      self::CLAVE_COLOR_PRIMARIO,
+      self::CLAVE_COLOR_SECUNDARIO,
+      self::CLAVE_COLOR_FONDO_MENU,
+      self::CLAVE_COLOR_FONDO_CONTENIDO,
+    ], true)) {
       return;
     }
 

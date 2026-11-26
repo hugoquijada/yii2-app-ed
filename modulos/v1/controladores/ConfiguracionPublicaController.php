@@ -19,6 +19,8 @@ class ConfiguracionPublicaController extends JsonController {
           Configuracion::CLAVE_LOGO,
           Configuracion::CLAVE_COLOR_PRIMARIO,
           Configuracion::CLAVE_COLOR_SECUNDARIO,
+          Configuracion::CLAVE_COLOR_FONDO_MENU,
+          Configuracion::CLAVE_COLOR_FONDO_CONTENIDO,
         ],
         'eliminado' => null,
       ])

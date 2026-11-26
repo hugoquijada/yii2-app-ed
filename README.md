@@ -16,11 +16,29 @@ Plantilla base de eDesarrollos sobre Yii2. Este proyecto consume `edesarrollos/y
 
 ## Instalacion
 
-Para crear un proyecto nuevo desde Packagist:
+Para crear un proyecto nuevo desde Packagist, indica siempre el directorio de
+destino. No desarrolles funcionalidades de un cliente dentro de este checkout
+de la plantilla:
 
 ```bash
-composer create-project --prefer-dist edesarrollos/yii2-app-ed
+composer create-project --prefer-dist edesarrollos/yii2-app-ed mi-proyecto-api
+cd mi-proyecto-api
 ```
+
+Crea primero un repositorio vacío para el proyecto y asígnalo como su único
+remoto `origin`:
+
+```bash
+git init -b main
+git add .
+git commit -m "chore: crear proyecto desde yii2-app-ed"
+git remote add origin <url-del-repositorio-del-proyecto>
+git push -u origin main
+```
+
+`origin` no debe apuntar al repositorio de `yii2-app-ed`. Las mejoras que sean
+reutilizables se implementan deliberadamente en la plantilla, en un cambio y
+commit separados.
 
 Si ya estas dentro del proyecto y solo quieres instalar dependencias:
 
@@ -47,6 +65,19 @@ ni los confirmes en Git.
 - `mail/`: vistas de correo del proyecto
 - `publico/`: punto de entrada web y archivos generados
 - `migraciones/`: migraciones
+
+## Base de datos
+
+PostgreSQL es el motor oficial de la plantilla. La configuración local vive en
+`config/db.php`; conservar `timestamp with time zone`, `jsonb`, índices
+parciales y operadores PostgreSQL en las migraciones.
+
+## Catálogos
+
+El catálogo de Configuración es una demostración de edición directa en grid.
+Los proyectos nuevos deben conservar este patrón para sus catálogos simples o
+eliminar la ruta de ejemplo si no la requieren; no copiarla como módulo de
+negocio.
 
 ## Configuracion importante
 
